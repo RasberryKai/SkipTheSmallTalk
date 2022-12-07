@@ -1,27 +1,30 @@
 import { Dispatch, MiddlewareAPI } from "@reduxjs/toolkit"
 import { supabase } from "../../lib/Supabase"
-import { getCompleteCards } from "../../functions/cardCalculations"
+import { getCompleteCards, getNextCardId, getPreviousCardId } from "../../functions/cardCalculations"
 import { dbTables } from "../../constants/keys"
+import { RootState } from "../../types"
 
 export const api = (api: MiddlewareAPI) => (next: Dispatch) => (action: any) => {
     const handleAction: { [key: string]: (state: any) => void } = {
-        "game/nextCard": (state: any) => {
-            const combineCards = getCompleteCards(state.game.currentCard, state.game.cardsDone, state.game.cardsLeft)
-            const nextCard = state.game.cardsLeft[0]
-            const index = combineCards.indexOf(nextCard)
-            const currentCard = state.game.cardIds[index]
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCard }).eq("id", state.game.levelGameId)
+        "game/nextCard": (state: RootState) => {
+            const currentCardId = getNextCardId(
+                getCompleteCards(state.game.currentCard, state.game.cardsDone, state.game.cardsLeft),
+                state.game.cardIds,
+                state.game.currentCard
+            )
+            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
         },
         "game/previousCard": (state: any) => {
-            const combineCards = getCompleteCards(state.game.currentCard, state.game.cardsDone, state.game.cardsLeft)
-            const previousCard = state.game.cardsDone[state.game.cardsDone.length - 1]
-            const index = combineCards.indexOf(previousCard)
-            const currentCard = state.game.cardIds[index]
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCard }).eq("id", state.game.levelGameId)
+            const currentCardId = getPreviousCardId(
+                getCompleteCards(state.game.currentCard, state.game.cardsDone, state.game.cardsLeft),
+                state.game.cardIds,
+                state.game.currentCard
+            )
+            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
         },
         "game/jumpToCard": (state: any) => {
-            const currentCard = state.game.cardIds[action.payload]
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCard }).eq("id", state.game.levelGameId)
+            const currentCardId = state.game.cardIds[action.payload]
+            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
         },
     }
     if (handleAction[action.type]) {

@@ -29,3 +29,15 @@ export function cardObjectToString(card: any) {
 export function cardObjectsToStrings(cards: any[]) {
     return cards.map((card) => cardObjectToString(card))
 }
+
+export function getNextCardId(combinedCards: any[], cardIds: any[], currentCardId: string | null | undefined) {
+    if (!currentCardId) return cardIds[0]
+    const index = combinedCards.indexOf(currentCardId)
+    return cardIds[index + 1]
+}
+
+export function getPreviousCardId(combinedCards: any[], cardIds: any[], currentCardId: string | null | undefined) {
+    if (!currentCardId) return cardIds[0]
+    const index = combinedCards.indexOf(currentCardId)
+    return cardIds[index - 1]
+}
