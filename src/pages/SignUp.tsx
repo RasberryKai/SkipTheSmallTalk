@@ -6,6 +6,7 @@ import { useState } from "react"
 import { showNotification } from "@mantine/notifications"
 import { useNavigate } from "react-router"
 import { emailAlreadyExists, usernameAlreadyExists } from "../api/user"
+import { dbTables } from "../constants/keys"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -63,7 +64,7 @@ export default function SignUp() {
             setIsLoading(false)
             return
         }
-        await supabase.from("profiles").insert([{ username: username, email: email.toLowerCase() }])
+        await supabase.from(dbTables.profiles).insert([{ username: username, email: email.toLowerCase() }])
         setIsLoading(false)
         setIsDisabled(true)
         showNotification({

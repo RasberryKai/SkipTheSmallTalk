@@ -11,6 +11,7 @@ import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
 import { selectGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
+import { dbTables } from "../constants/keys"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
@@ -35,7 +36,9 @@ export default function Home() {
     }
 
     useEffect(() => {
-        updateUserInfo()
+        updateUserInfo().then(() => {
+            if (!loggedIn) navigate("/signIn")
+        })
     }, [])
 
     // populate store with games from database
@@ -46,7 +49,7 @@ export default function Home() {
                 return
             }
             // Fetching Join Table game ids
-            const { data, error } = await supabase.from("playerGamesJoin").select("game").eq("player", user.id)
+            const { data, error } = await supabase.from(dbTables.playerGamesJoin).select("game").eq("player", user.id)
             if (error) {
                 console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
                 return
@@ -59,7 +62,7 @@ export default function Home() {
             for (const game of data) gameIds.push(game.game)
 
             // Fetching games, which match the game ids from the join table
-            const response = await supabase.from("games").select("id, player_names, name").in("id", gameIds)
+            const response = await supabase.from(dbTables.games).select("id, player_names, name").in("id", gameIds)
             if (response.error) {
                 console.log("Error: ", JSON.stringify(response.error, null, 2))
                 return
@@ -67,7 +70,7 @@ export default function Home() {
             if (!response.data) return
             let games: DisplayGame[] = []
             for (const game of response.data) {
-                const { data, error } = await supabase.from("playerGamesJoin").select("player").eq("game", game.id)
+                const { data, error } = await supabase.from(dbTables.playerGamesJoin).select("player").eq("game", game.id)
                 if (error) {
                     console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
                     continue
@@ -79,7 +82,7 @@ export default function Home() {
                 const playerNames: string[] = game.player_names
                 // Fetching player names from profile table
                 for (const player of data) {
-                    const { data, error } = await supabase.from("profiles").select("username").eq("id", player.player)
+                    const { data, error } = await supabase.from(dbTables.profiles).select("username").eq("id", player.player)
                     if (error) {
                         console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
                         continue

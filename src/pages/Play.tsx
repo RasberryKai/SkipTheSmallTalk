@@ -3,10 +3,23 @@ import { IconArrowBackUp } from "@tabler/icons"
 import NavigationBar from "../components/play/NavigationBar"
 import ActionBar from "../components/play/ActionBar"
 import QuestionCard from "../components/play/QuestionCard"
+import { useMantineTheme } from "@mantine/core"
+import { useSelector } from "react-redux"
+import { RootState } from "../types"
+import { useEffect } from "react"
+import { useNavigate } from "react-router"
 
 export default function Play() {
     // check redux store
     // if no game, navigate to home
+    useMantineTheme().colorScheme = "dark"
+    const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!loggedIn) navigate("/signIn")
+    }, [])
+
     return (
         <div className={"w-full h-screen flex flex-col items-center"}>
             {/* Backlink */}

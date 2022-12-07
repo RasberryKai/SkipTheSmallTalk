@@ -5,9 +5,13 @@ import { supabase } from "../lib/Supabase"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import ButtonWrapper from "../components/common/ButtonWrapper"
+import { getCurrentUserId, getCurrentUsername } from "../api/user"
+import { useDispatch } from "react-redux"
+import { logIn } from "../store/userSlice"
 
 export default function SignIn() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     useMantineTheme().colorScheme = "dark"
@@ -31,6 +35,9 @@ export default function SignIn() {
             setIsLoading(false)
             return
         }
+        const username = await getCurrentUsername()
+        const currentUserId = await getCurrentUserId()
+        if (email && currentUserId && username) dispatch(logIn({ email: email, username: username, id: currentUserId }))
         navigate("/")
     }
 

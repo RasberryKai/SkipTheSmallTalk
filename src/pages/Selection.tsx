@@ -9,6 +9,7 @@ import { SelectionCardInfo } from "../types"
 import { showNotification } from "@mantine/notifications"
 import { cardObjectsToStrings, getSplitCards, sortCards } from "../functions/cardCalculations"
 import { getCard, getCards } from "../api/cards"
+import { dbTables } from "../constants/keys"
 
 export default function Selection() {
     const dispatch = useDispatch()
@@ -16,10 +17,11 @@ export default function Selection() {
     const game = useSelector((state: any) => state.game.gameId)
     const deck = useSelector((state: any) => state.game.deckId)
     const level = useSelector((state: any) => state.game.levelId)
+    const loggedIn = useSelector((state: any) => state.user.loggedIn)
     const [displayedItems, setDisplayedItems] = useState<SelectionCardInfo[]>([])
 
     const renderDecks = async () => {
-        const { data, error } = await supabase.from("decks").select("*")
+        const { data, error } = await supabase.from(dbTables.decks).select("*")
         if (error) {
             console.log("Error while getting decks: ", error)
             return
@@ -36,7 +38,7 @@ export default function Selection() {
     }
 
     const renderLevels = async () => {
-        const { data, error } = await supabase.from("levels").select("*").eq("deck", deck)
+        const { data, error } = await supabase.from(dbTables.levels).select("*").eq("deck", deck)
         if (error) {
             console.log("Error while getting games: ", error)
             return
@@ -53,7 +55,12 @@ export default function Selection() {
     }
 
     const initialiseGame = async () => {
-        const { data, error } = await supabase.from("levelGame").select("*").eq("game", game).eq("deck", deck).eq("level", level)
+        const { data, error } = await supabase
+            .from(dbTables.levelGames)
+            .select("*")
+            .eq("game", game)
+            .eq("deck", deck)
+            .eq("level", level)
         if (error) {
             console.log(`Error while checking for existing levelGame: ${error}`)
             showNotification({
@@ -87,7 +94,7 @@ export default function Selection() {
         }
         // 1. Create levelGame and populate store
         const response = await supabase
-            .from("levelGame")
+            .from(dbTables.levelGames)
             .insert([
                 {
                     deck: deck,
@@ -121,6 +128,10 @@ export default function Selection() {
             if (game && deck && level) await initialiseGame()
         })()
     }, [game, deck, level])
+
+    useEffect(() => {
+        if (!loggedIn) navigate("/signIn")
+    }, [])
 
     const dispatchSelected = (id: string, levelNumber: number | null) => {
         // dispatch new deck

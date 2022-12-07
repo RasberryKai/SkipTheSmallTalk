@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Header from "../components/common/Header"
 import InputPair from "../components/addGame/InputPair"
 import InputSelectionMenu from "../components/addGame/InputSelectionMenu"
@@ -9,11 +9,13 @@ import { supabase } from "../lib/Supabase"
 import { showNotification } from "@mantine/notifications"
 import { useNavigate } from "react-router"
 import { useSelector } from "react-redux"
+import { dbTables } from "../constants/keys"
 
 export default function AddGame() {
     useMantineTheme().colorScheme = "light"
     const navigate = useNavigate()
     const userId = useSelector((state: any) => state.user.id)
+    const loggedIn = useSelector((state: any) => state.user.loggedIn)
     const [inputs, setInputs] = useState<DynamicInput[]>([{ type: "name", value: "" }])
     const nameRef = useRef<HTMLInputElement>(null)
     const [nameErr, setNameErr] = useState<string | null>(null)
@@ -41,7 +43,7 @@ export default function AddGame() {
         for (const input of inputs) {
             if (input.type === "user") {
                 const { data, error } = await supabase
-                    .from("profiles")
+                    .from(dbTables.profiles)
                     .select("id")
                     .or(`username.eq.${input.value},email.eq.${input.value}`)
                 if (error) {
@@ -54,7 +56,7 @@ export default function AddGame() {
             }
         }
         const { data, error } = await supabase
-            .from("games")
+            .from(dbTables.games)
             .insert({
                 player_names: player_names,
                 name: nameRef.current.value,
@@ -70,13 +72,13 @@ export default function AddGame() {
             return
         }
         const gameId = data[0].id
-        const response = await supabase.from("playerGamesJoin").insert({ player: userId, game: gameId })
+        const response = await supabase.from(dbTables.playerGamesJoin).insert({ player: userId, game: gameId })
         if (response.error) {
             console.log("Response Error: ", JSON.stringify(response.error, null, 2))
             return
         }
         for (const playerId of playerIds) {
-            const { error } = await supabase.from("playerGamesJoin").insert({ player: playerId, game: gameId })
+            const { error } = await supabase.from(dbTables.playerGamesJoin).insert({ player: playerId, game: gameId })
             console.log(error?.message)
         }
         showNotification({
@@ -86,6 +88,10 @@ export default function AddGame() {
         })
         navigate("/")
     }
+
+    useEffect(() => {
+        if (!loggedIn) navigate("/signIn")
+    }, [])
 
     return (
         <>
