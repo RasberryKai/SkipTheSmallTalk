@@ -5,7 +5,7 @@ import Card from "../components/home/Card"
 import { DisplayGame, RootState } from "../types"
 import { useEffect } from "react"
 import { supabase } from "../lib/Supabase"
-import { logIn, setGames, UserData } from "../store/userSlice"
+import { logIn, logOut, setGames, UserData } from "../store/userSlice"
 import AddButton from "../components/home/AddButton"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
@@ -33,6 +33,7 @@ export default function Home() {
                     username: username,
                 })
             )
+        else await dispatch(logOut())
     }
 
     useEffect(() => {
