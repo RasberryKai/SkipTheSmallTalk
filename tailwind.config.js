@@ -1,0 +1,25 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        "./src/**/*.{js,jsx,ts,tsx}",
+        "./src/components/**/*.{js,jsx,ts,tsx}",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                primary: {
+                    normal: "#F51112",
+                    dark: "#B21127",
+                },
+                secondary: "#020202",
+                accent: "#fff",
+                gray: "#1a1c1e",
+                actionable: "#197aff",
+            },
+            backgroundImage: {
+                login: "url('/public/Login2.jpg')",
+            },
+        },
+    },
+    plugins: [],
+}
