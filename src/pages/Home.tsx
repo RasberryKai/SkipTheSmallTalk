@@ -57,7 +57,8 @@ export default function Home() {
             }
             const gameIds: string[] = []
             if (!data || data?.length === 0) {
-                console.log("No join data")
+                console.log("No games found for user")
+                await dispatch(setGames([]))
                 return
             }
             for (const game of data) gameIds.push(game.game)
