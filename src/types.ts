@@ -16,6 +16,8 @@ export type CardState = {
     cardsLeft: string[]
 }
 
+export type wildcard = string | null | undefined
+
 // Components
 export type DisplayGame = {
     id: string

@@ -4,17 +4,21 @@ import NavigationBar from "../components/play/NavigationBar"
 import ActionBar from "../components/play/ActionBar"
 import QuestionCard from "../components/play/QuestionCard"
 import { useMantineTheme } from "@mantine/core"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../types"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
+import { clearGame, selectDeck, selectGame } from "../store/gameSlice"
 
 export default function Play() {
     // check redux store
     // if no game, navigate to home
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     useMantineTheme().colorScheme = "dark"
     const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
-    const navigate = useNavigate()
+    const gameId = useSelector((state: RootState) => state.game.gameId)
+    const deckId = useSelector((state: RootState) => state.game.deckId)
 
     useEffect(() => {
         if (!loggedIn) navigate("/signIn")
@@ -24,9 +28,19 @@ export default function Play() {
         <div className={"w-full h-screen flex flex-col items-center"}>
             {/* Backlink */}
             <div className={"w-full flex flex-row justify-start"}>
-                <Link to={"/"} className={"text-xl text-white flex flex-row items-center"}>
+                <Link
+                    to={"/select"}
+                    onClick={() => {
+                        const id = gameId
+                        const deck = deckId
+                        dispatch(clearGame())
+                        dispatch(selectGame(id))
+                        dispatch(selectDeck(deck))
+                    }}
+                    className={"text-xl text-white flex flex-row items-center"}
+                >
                     <IconArrowBack />
-                    <p className={"underline underline-offset-1 ml-2"}>Home</p>
+                    <p className={"ml-2"}>Back</p>
                 </Link>
             </div>
             <div className={"w-full h-full flex flex-col justify-center items-center pb-52"}>

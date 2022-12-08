@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { CardState } from "../types"
+import { CardState, wildcard } from "../types"
 import { getCompleteCards, resplitCards } from "../functions/cardCalculations"
 
 export interface GameState {
@@ -30,19 +30,19 @@ export const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        selectGame(state, action: PayloadAction<string | null>) {
+        selectGame(state, action: PayloadAction<wildcard>) {
             state.gameId = action.payload
         },
-        selectDeck(state, action: PayloadAction<string | null>) {
+        selectDeck(state, action: PayloadAction<wildcard>) {
             state.deckId = action.payload
         },
-        selectLevel(state, action: PayloadAction<string | null>) {
+        selectLevel(state, action: PayloadAction<wildcard>) {
             state.levelId = action.payload
         },
-        selectLevelNumber(state, action: PayloadAction<number>) {
+        selectLevelNumber(state, action: PayloadAction<number | null>) {
             state.level = action.payload
         },
-        selectLevelGame(state, action: PayloadAction<string>) {
+        selectLevelGame(state, action: PayloadAction<wildcard>) {
             state.levelGameId = action.payload
         },
         setCardState(state, action: PayloadAction<CardState>) {
