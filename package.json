@@ -40,9 +40,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "serve -s build",
-    "dev": "react-scripts start",
-    "build": "react-scripts build && npm install -g serve",
+    "start": "sh ./scripts/serve.sh",
+    "dev": "sh ./scripts/dev.sh",
+    "build": "sh ./scripts/build.sh",
     "test": "jest",
     "eject": "react-scripts eject"
   },
