@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router"
-import Header from "../components/common/Header"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { selectDeck, selectLevel, selectLevelGame, selectLevelNumber, setCardIds, setCardState } from "../store/gameSlice"
@@ -10,6 +9,7 @@ import { showNotification } from "@mantine/notifications"
 import { cardObjectsToStrings, getSplitCards, sortCards } from "../functions/cardCalculations"
 import { getCard, getCards } from "../api/cards"
 import { dbTables } from "../constants/keys"
+import SelectionHeader from "../components/selection/SelectionHeader"
 
 export default function Selection() {
     const dispatch = useDispatch()
@@ -143,9 +143,15 @@ export default function Selection() {
         }
     }
 
+    const goBack = () => {
+        if (!deck) navigate("/")
+        else if (!level) dispatch(selectDeck(null))
+        else dispatch(selectLevel(null))
+    }
+
     return (
         <>
-            <Header>Start your Game!</Header>
+            <SelectionHeader onClick={goBack}>Start your Game!</SelectionHeader>
             <div className={"mb-4"} />
             <div>
                 {displayedItems.map((item) => {

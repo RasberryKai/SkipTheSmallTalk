@@ -1,14 +1,11 @@
 import { Divider } from "@mantine/core"
 import { IconArrowBack } from "@tabler/icons"
-import { useNavigate } from "react-router"
 
-export default function Header(props: any) {
-    const navigate = useNavigate()
-
+export default function SelectionHeader(props: any) {
     return (
         <div className={props.className}>
             <div className={"flex flex-row items-center"}>
-                <IconArrowBack color={"white"} className={"mr-2"} onClick={() => navigate(-1)} />
+                <IconArrowBack color={"white"} className={"mr-2"} onClick={props.onClick} />
                 <p className={"text-white text-4xl mb-2"}>{props.children}</p>
             </div>
             <Divider color={"white"} />

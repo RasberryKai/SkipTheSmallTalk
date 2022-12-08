@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { IconArrowBackUp } from "@tabler/icons"
+import { IconArrowBack } from "@tabler/icons"
 import NavigationBar from "../components/play/NavigationBar"
 import ActionBar from "../components/play/ActionBar"
 import QuestionCard from "../components/play/QuestionCard"
@@ -24,8 +24,8 @@ export default function Play() {
         <div className={"w-full h-screen flex flex-col items-center"}>
             {/* Backlink */}
             <div className={"w-full flex flex-row justify-start"}>
-                <Link to={"/"} className={"text-xl text-grey flex flex-row items-center"}>
-                    <IconArrowBackUp />
+                <Link to={"/"} className={"text-xl text-white flex flex-row items-center"}>
+                    <IconArrowBack />
                     <p className={"underline underline-offset-1 ml-2"}>Home</p>
                 </Link>
             </div>

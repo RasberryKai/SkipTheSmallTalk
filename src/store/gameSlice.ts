@@ -30,13 +30,13 @@ export const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        selectGame(state, action: PayloadAction<string>) {
+        selectGame(state, action: PayloadAction<string | null>) {
             state.gameId = action.payload
         },
-        selectDeck(state, action: PayloadAction<string>) {
+        selectDeck(state, action: PayloadAction<string | null>) {
             state.deckId = action.payload
         },
-        selectLevel(state, action: PayloadAction<string>) {
+        selectLevel(state, action: PayloadAction<string | null>) {
             state.levelId = action.payload
         },
         selectLevelNumber(state, action: PayloadAction<number>) {
