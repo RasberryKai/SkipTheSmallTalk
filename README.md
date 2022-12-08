@@ -1,46 +1,46 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Skip The Small Talk!
 
-## Available Scripts
+Skip The Small Talk is a mobile card game. You and the lucky people near you are prompted question written
+on cards. On each turn, you ask the prompted person the question written. This cycle repeats
+until you have played through the level, and afterwards the deck of cards. Using this method, you
+don't get to know each other like you just had your first conversation, but really get to know
+what drives them, and why they wake up each morning.
 
-In the project directory, you can run:
 
-### `npm start`
+## Demo
+To see a live demo of the app, go to https://playstst.com
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Yarn needs to be installed `npm i -g yarn`
+2. Environments need to be created -> create an environments folder in the root directory, and
+inside the environments folder a dev, and a prod one. Then put the .env files in dev and prod.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Install and Run
 
-### `npm test`
+1. `git clone https://github.com/RasberryKai/SkipTheSmallTalk.git`
+2. `yarn`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+After installing you can run the application.
 
-### `npm run build`
+- `yarn dev` for running the app in development mode.
+- `yarn build` for building the app.
+- `yarn start` for serving the app locally.
+    
+## Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**React:** Frontend Framework.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Supabase**: Backend Service.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Deployment
+In order to deploy the app, you push your changes to the main branch, and DigitalOcean
+handles the rest.
+## Environment Variables
 
-### `npm run eject`
+To run this project, you will need to add the following environment variables to your .env file
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`REACT_APP_SUPABASE_URL`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`REACT_APP_SUPABASE_ANON_KEY`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
