@@ -9,7 +9,7 @@ import { logIn, logOut, setGames, UserData } from "../store/userSlice"
 import AddButton from "../components/home/AddButton"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
-import { selectGame } from "../store/gameSlice"
+import { clearGame, selectGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { dbTables } from "../constants/keys"
 
@@ -33,7 +33,10 @@ export default function Home() {
                     username: username,
                 })
             )
-        else await dispatch(logOut())
+        else {
+            await dispatch(logOut())
+            await dispatch(clearGame())
+        }
     }
 
     useEffect(() => {
