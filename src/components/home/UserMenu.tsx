@@ -13,13 +13,12 @@ export default function UserMenu(props: UserMenu) {
     const navigate = useNavigate()
 
     return (
-        <Menu shadow={"md"}>
+        <Menu shadow={"md"} withArrow={true}>
             <Menu.Target>
                 <p className={"text-white text-xl underline underline-offset-2"}>{props.username}</p>
             </Menu.Target>
 
             <Menu.Dropdown>
-                <Menu.Label>User Menu</Menu.Label>
                 <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
                 <Menu.Item
                     color="red"
