@@ -120,19 +120,20 @@ export default function Home() {
             {/* Body Container */}
             <div className={"flex flex-col items-center overflow-scroll mt-4"}>
                 {user.games &&
-                    user.games.map((deck: DisplayGame, index: number) => (
+                    user.games.map((game: DisplayGame, index: number) => (
                         <Card
-                            name={deck.name}
-                            playerNames={deck.player_names}
-                            percentage={deck.percentage}
+                            name={game.name}
+                            playerNames={game.player_names}
+                            percentage={game.percentage}
                             onClick={() => {
                                 if (levelGameId) {
                                     navigate("/play")
                                 } else {
-                                    dispatch(selectGame(deck.id))
+                                    dispatch(selectGame(game.id))
                                     navigate("/select")
                                 }
                             }}
+                            id={game.id}
                             key={index}
                         />
                     ))}
