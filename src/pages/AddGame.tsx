@@ -75,17 +75,16 @@ export default function AddGame() {
         const response = await supabase.from(dbTables.playerGamesJoin).insert({ player: userId, game: gameId })
         if (response.error) {
             console.log("Response Error: ", JSON.stringify(response.error, null, 2))
+            showNotification({
+                title: "Failed to Create Game",
+                message: response.error.message,
+            })
             return
         }
         for (const playerId of playerIds) {
             const { error } = await supabase.from(dbTables.playerGamesJoin).insert({ player: playerId, game: gameId })
             console.log(error?.message)
         }
-        showNotification({
-            title: "Game created",
-            message: `Game ${nameRef.current.value} created`,
-            color: "green",
-        })
         navigate("/")
     }
 
