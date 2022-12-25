@@ -67,7 +67,7 @@ export default function Home() {
             for (const game of data) gameIds.push(game.game)
 
             // Fetching games, which match the game ids from the join table
-            const response = await supabase.from(dbTables.games).select("id, player_names, name").in("id", gameIds)
+            const response = await supabase.from(dbTables.games).select("id, name").in("id", gameIds)
             if (response.error) {
                 console.log("Error: ", JSON.stringify(response.error, null, 2))
                 return
@@ -84,7 +84,7 @@ export default function Home() {
                     console.log("No join data")
                     continue
                 }
-                const playerNames: string[] = game.player_names
+                const playerNames: string[] = []
                 // Fetching player names from profile table
                 for (const player of data) {
                     const { data, error } = await supabase.from(dbTables.profiles).select("username").eq("id", player.player)
