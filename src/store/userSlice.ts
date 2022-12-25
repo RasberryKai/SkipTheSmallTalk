@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { DisplayGame, UserUpdate } from "../types"
 import { supabase } from "../lib/Supabase"
 
-export interface UserData {
+export interface UserState {
     loggedIn: boolean
     games: DisplayGame[]
     id: string | null | undefined
@@ -10,7 +10,7 @@ export interface UserData {
     username: string | null | undefined
 }
 
-const initialState: UserData = {
+const initialState: UserState = {
     loggedIn: false,
     games: [],
     id: null,

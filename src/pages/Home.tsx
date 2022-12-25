@@ -5,7 +5,7 @@ import Card from "../components/home/Card"
 import { DisplayGame, RootState } from "../types"
 import { useEffect } from "react"
 import { supabase } from "../lib/Supabase"
-import { logIn, logOut, setGames, UserData } from "../store/userSlice"
+import { logIn, logOut, setGames, UserState } from "../store/userSlice"
 import AddButton from "../components/home/AddButton"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
@@ -15,7 +15,7 @@ import { dbTables } from "../constants/keys"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
-    const user: UserData = useSelector((state: RootState) => state.user)
+    const user: UserState = useSelector((state: RootState) => state.user)
     const levelGameId = useSelector((state: RootState) => state.game.levelGameId)
     const navigate = useNavigate()
     const dispatch = useDispatch()
