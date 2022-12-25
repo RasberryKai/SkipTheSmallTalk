@@ -12,7 +12,11 @@ export const api = (api: MiddlewareAPI) => (next: Dispatch) => (action: any) => 
                 state.game.cardIds,
                 state.game.currentCard
             )
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
+            supabase
+                .from(dbTables.levelGames)
+                .update({ selected_card: currentCardId })
+                .eq("id", state.game.levelGameId)
+                .then(() => {})
         },
         "game/previousCard": (state: any) => {
             const currentCardId = getPreviousCardId(
@@ -20,11 +24,19 @@ export const api = (api: MiddlewareAPI) => (next: Dispatch) => (action: any) => 
                 state.game.cardIds,
                 state.game.currentCard
             )
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
+            supabase
+                .from(dbTables.levelGames)
+                .update({ selected_card: currentCardId })
+                .eq("id", state.game.levelGameId)
+                .then(() => {})
         },
         "game/jumpToCard": (state: any) => {
             const currentCardId = state.game.cardIds[action.payload]
-            supabase.from(dbTables.levelGames).update({ selected_card: currentCardId }).eq("id", state.game.levelGameId)
+            supabase
+                .from(dbTables.levelGames)
+                .update({ selected_card: currentCardId })
+                .eq("id", state.game.levelGameId)
+                .then(() => {})
         },
     }
     if (handleAction[action.type]) {
