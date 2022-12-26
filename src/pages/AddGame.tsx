@@ -1,29 +1,35 @@
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 import Header from "../components/common/Header"
-import RemovableUserItem from "../components/addGame/RemovableUserItem"
-import InputSelectionMenu from "../components/addGame/InputSelectionMenu"
-import { useMantineTheme, TextInput, Center } from "@mantine/core"
-import { DynamicInput, RootState } from "../types"
-import ButtonWrapper from "../components/common/ButtonWrapper"
-import { supabase } from "../lib/Supabase"
-import { showNotification } from "@mantine/notifications"
+import { useMantineTheme } from "@mantine/core"
+import { RootState } from "../types"
 import { useNavigate } from "react-router"
-import { useSelector } from "react-redux"
-import { dbTables } from "../constants/keys"
+import { useDispatch, useSelector } from "react-redux"
 import useNeedsToBeLoggedIn from "../hooks/useNeedsToBeLoggedIn"
 import ShareGamePage from "../components/addGame/ShareGamePage"
+import GameNamePage from "../components/addGame/GameNamePage"
+import { selectGameCreationId, selectGameCreationName } from "../store/gameCreationSlice"
 
 export default function AddGame() {
     useNeedsToBeLoggedIn()
     useMantineTheme().colorScheme = "light"
 
-    // TODO: Replace SharedGamePage with redux query
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const gameName = useSelector((state: RootState) => state.gameCreation.gameName)
+    const handleBack = () => {
+        if (gameName) {
+            dispatch(selectGameCreationId(""))
+            dispatch(selectGameCreationName(""))
+        } else {
+            navigate(-1)
+        }
+    }
 
     return (
         <>
-            <Header>Share Game!</Header>
+            <Header onClick={handleBack}>{gameName ? "Share Game!" : "Create your Game!"}</Header>
             <div className={"flex flex-col w-full h-4/5 justify-between items-end"}>
-                <ShareGamePage />
+                {gameName ? <ShareGamePage /> : <GameNamePage />}
             </div>
         </>
     )
