@@ -1,4 +1,4 @@
-import { Center, TextInput } from "@mantine/core"
+import { TextInput } from "@mantine/core"
 import ButtonWrapper from "../common/ButtonWrapper"
 import React, { useState } from "react"
 import { supabase } from "../../lib/Supabase"
@@ -10,9 +10,6 @@ import { RootState } from "../../types"
 import RemovableUserItem from "./RemovableUserItem"
 
 export default function ShareGamePage() {
-    const nameRef = ""
-    const gameName = useSelector((state: RootState) => state)
-
     const navigate = useNavigate()
     const userId = useSelector((state: RootState) => state.user.id)
 
@@ -99,7 +96,7 @@ export default function ShareGamePage() {
                 </div>
             </div>
             <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[92%]"}>
-                Next
+                Finish
             </ButtonWrapper>
         </>
     )
