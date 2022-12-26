@@ -4,10 +4,12 @@ import { api } from "./middleware/api"
 import GameSlice from "./gameSlice"
 import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist"
+import GameCreationSlice from "./gameCreationSlice"
 
 const reducers = combineReducers({
     user: UserSlice,
     game: GameSlice,
+    gameCreation: GameCreationSlice,
 })
 
 const persistConfig = {
