@@ -8,6 +8,7 @@ import { useNavigate } from "react-router"
 import { emailAlreadyExists, usernameAlreadyExists } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AuthContainer from "../components/authentication/AuthContainer"
+import AuthHeader from "../components/authentication/AuthHeader"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -76,7 +77,7 @@ export default function SignUp() {
 
     return (
         <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-            <p className={"text-4xl mb-10"}>Sign Up</p>
+            <AuthHeader>Sign Up</AuthHeader>
             <TextInput
                 label={"Email"}
                 placeholder={"john.doe@gmail.com"}

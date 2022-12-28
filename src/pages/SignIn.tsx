@@ -9,6 +9,7 @@ import { getCurrentUserId, getCurrentUsername } from "../api/user"
 import { useDispatch } from "react-redux"
 import { logIn } from "../store/userSlice"
 import AuthContainer from "../components/authentication/AuthContainer"
+import AuthHeader from "../components/authentication/AuthHeader"
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -53,7 +54,7 @@ export default function SignIn() {
 
     return (
         <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-            <p className={"text-4xl mb-10"}>Sign In</p>
+            <AuthHeader>Sign In</AuthHeader>
             <TextInput
                 label={"Email"}
                 placeholder={"name@gmail.com"}
