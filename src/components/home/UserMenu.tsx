@@ -21,7 +21,7 @@ export default function UserMenu(props: UserMenu) {
             <Menu.Dropdown>
                 <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
                 <Menu.Item
-                    color="red"
+                    color="realRed"
                     icon={<IconLogout size={14} />}
                     onClick={() => {
                         dispatch(logOut())

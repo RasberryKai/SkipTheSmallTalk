@@ -21,7 +21,7 @@ export default function Options(props: { id: string }) {
 
                         <Menu.Dropdown>
                             <Menu.Item
-                                color="red"
+                                color="realRed"
                                 icon={<IconTrash size={16} stroke={1.7} />}
                                 onClick={async () => {
                                     const error = await deleteGame(props.id)
