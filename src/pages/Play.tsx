@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom"
-import { IconArrowBack, IconChevronLeft, IconChevronRight } from "@tabler/icons"
-import ActionBar from "../components/play/ActionBar"
+import { IconArrowBack } from "@tabler/icons"
 import QuestionCard from "../components/play/QuestionCard"
 import { useMantineTheme } from "@mantine/core"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../types"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import { clearGame, nextCard, previousCard, selectDeck, selectGame } from "../store/gameSlice"
+import { clearGame, selectDeck, selectGame } from "../store/gameSlice"
+import ControlBar from "../components/play/ControlBar"
 
 export default function Play() {
     // check redux store
@@ -19,8 +19,6 @@ export default function Play() {
     const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
     const gameId = useSelector((state: RootState) => state.game.gameId)
     const deckId = useSelector((state: RootState) => state.game.deckId)
-    const cardsDone = useSelector((state: RootState) => state.game.cardsDone)
-    const cardsLeft = useSelector((state: RootState) => state.game.cardsLeft)
 
     useEffect(() => {
         if (!loggedIn) navigate("/signIn")
@@ -47,21 +45,8 @@ export default function Play() {
             </div>
             <div className={"w-full h-full flex flex-col justify-center items-center pb-52"}>
                 <QuestionCard />
-                <div className={"flex flex-row w-11/12 justify-between items-center"}>
-                    <IconChevronLeft
-                        onClick={() => {
-                            if (cardsDone.length > 0) dispatch(previousCard())
-                        }}
-                        className={"text-white"}
-                    />
-                    <ActionBar />
-                    <IconChevronRight
-                        onClick={() => {
-                            if (cardsLeft.length > 0) dispatch(nextCard())
-                        }}
-                        className={"text-white"}
-                    />
-                </div>
+                <div className={"mb-6"} />
+                <ControlBar />
             </div>
         </div>
     )

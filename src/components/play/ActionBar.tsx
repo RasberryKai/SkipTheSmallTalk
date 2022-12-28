@@ -19,7 +19,7 @@ export default function ActionBar() {
 
     return (
         <div className={"flex flex-col text-white mt-4"}>
-            <p className={"font-bold"}>
+            <p className={"font-bold mb-2"}>
                 LEVEL {levelNumber} - {1 + cardsDone.length} / {1 + cardsDone.length + cardsLeft.length}
             </p>
             <div className={"flex flex-row justify-center"}>
