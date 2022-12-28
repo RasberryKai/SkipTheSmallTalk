@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="padding: 10px 100px 10px 10px;">
+    <h2 style="color: #423f42">Confirm your email address to get started with SkipTheSmallTalk!</h2>
+    <p style="color: #6e6d6e;">
+        Once you've confirmed your email, and logged in, you can start playing STST. Confirm your email by clicking the
+        button below.
+    </p>
+    <div style="width: 100%; margin-bottom: 20px;">
+        <div style="color: #FFF;
+            background: #b21127;
+            -webkit-box-shadow: 4px 10px 33px -7px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px 10px 33px -7px rgba(0,0,0,0.75);
+            box-shadow: 4px 10px 33px -7px rgba(0,0,0,0.75);
+            margin-top: 20px;
+            width: 250px;
+            height: 40px;
+            border-radius: 5px;">
+            <a style="color: inherit; display: grid; place-items: center; text-decoration: none;"
+               href="{{ .ConfirmationURL }}">
+                <button
+                    style="width: 100%; height: 100%; background: none;color: inherit;border: none;padding: 0;font: inherit;cursor: pointer; outline: inherit; font-weight: bold; margin-top: 10px;">
+                    <span style="text-align: center; width: 100%; height: 100%;">Confirm email</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    <p style="color: #797c80; font-size: 17px; margin-right: 40px;">
+        If you did not sign up using your email, please ignore this message, or contact our
+        <a style="text-decoration: none;" href="https://playstst.com/support">support</a>
+        if you have questions.
+    </p>
+    <p style="color: #797c80; font-size: 17px;">
+        Thanks,
+        <br>
+        The SkipTheSmallTalk Team
+    </p>
+    <hr style="border-top: 1px solid #adb0b3; width: 100%; margin-top: 20px; margin-bottom: 20px;">
+    <p style="color: #797c80; font-size: 15px;">
+        If you're having trouble with the button above, copy and paste the URL
+        below into your web browser.
+        <br>
+        <br>
+        {{ .ConfirmationURL }}
+    </p>
+</div>
+</body>
+</html>

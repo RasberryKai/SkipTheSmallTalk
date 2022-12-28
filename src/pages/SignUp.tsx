@@ -72,6 +72,7 @@ export default function SignUp() {
         showNotification({
             title: "Verification Email sent",
             message: "Please check your email to verify your account",
+            color: "green",
         })
         form.setValues({ email: "", username: "", password: "" })
     }
