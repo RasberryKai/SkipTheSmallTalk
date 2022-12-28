@@ -7,6 +7,7 @@ import { showNotification } from "@mantine/notifications"
 import { useNavigate } from "react-router"
 import { emailAlreadyExists, usernameAlreadyExists } from "../api/user"
 import { dbTables } from "../constants/keys"
+import AuthContainer from "../components/authentication/AuthContainer"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -20,9 +21,7 @@ export default function SignUp() {
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
             username: (value) => {
-                if (value.length < 6) {
-                    return "Username must be at least 6 characters"
-                }
+                if (value.length < 3) return "Username must be at least 3 characters"
                 return null
             },
         },
@@ -75,57 +74,43 @@ export default function SignUp() {
     }
 
     return (
-        <div className={"w-full h-screen flex flex-col items-center justify-center pb-32"}>
-            <form
-                className={"w-11/12 h-2/3 bg-gray rounded-xl flex flex-col items-center pt-6"}
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    onSubmit()
-                }}
-            >
-                <p className={"text-4xl mb-10"}>Sign Up</p>
-                <TextInput
-                    label={"Email"}
-                    placeholder={"john.doe@gmail.com"}
-                    withAsterisk={true}
-                    required={true}
-                    radius={"md"}
-                    variant={"filled"}
-                    autoFocus={true}
-                    className={"w-11/12 mb-6"}
-                    {...form.getInputProps("email")}
-                />
-                <TextInput
-                    label={"Username"}
-                    placeholder={"John Doe"}
-                    withAsterisk={true}
-                    required={true}
-                    radius={"md"}
-                    variant={"filled"}
-                    className={"w-11/12 mb-6"}
-                    {...form.getInputProps("username")}
-                />
-                <PasswordInput
-                    label={"Password"}
-                    placeholder={"********"}
-                    withAsterisk={true}
-                    required={true}
-                    radius={"md"}
-                    variant={"filled"}
-                    className={`w-11/12 ${errorMessage ? "mb-2" : "mb-6"}`}
-                    {...form.getInputProps("password")}
-                />
-                {errorMessage && <p className={"text-red-600 mb-4 mr-2 ml-4"}>{errorMessage}</p>}
-                <ButtonWrapper
-                    disabled={isDisabled}
-                    loading={isLoading}
-                    variant={"actionable"}
-                    type={"submit"}
-                    className={"w-1/2"}
-                >
-                    Sign Up
-                </ButtonWrapper>
-            </form>
-        </div>
+        <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
+            <p className={"text-4xl mb-10"}>Sign Up</p>
+            <TextInput
+                label={"Email"}
+                placeholder={"john.doe@gmail.com"}
+                withAsterisk={true}
+                required={true}
+                radius={"md"}
+                variant={"filled"}
+                autoFocus={true}
+                className={"w-full mb-6"}
+                {...form.getInputProps("email")}
+            />
+            <TextInput
+                label={"Username"}
+                placeholder={"John Doe"}
+                withAsterisk={true}
+                required={true}
+                radius={"md"}
+                variant={"filled"}
+                className={"w-full mb-6"}
+                {...form.getInputProps("username")}
+            />
+            <PasswordInput
+                label={"Password"}
+                placeholder={"********"}
+                withAsterisk={true}
+                required={true}
+                radius={"md"}
+                variant={"filled"}
+                className={"w-full mb-6"}
+                {...form.getInputProps("password")}
+            />
+            <ButtonWrapper disabled={isDisabled} loading={isLoading} variant={"actionable"} type={"submit"} className={"w-1/2"}>
+                Sign Up
+            </ButtonWrapper>
+            {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
+        </AuthContainer>
     )
 }
