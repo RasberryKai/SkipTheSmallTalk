@@ -11,7 +11,8 @@ import { selectGameCreationId, selectGameCreationName } from "../store/gameCreat
 
 export default function AddGame() {
     useNeedsToBeLoggedIn()
-    useMantineTheme().colorScheme = "light"
+    const theme = useMantineTheme()
+    theme.colorScheme = "light"
 
     const navigate = useNavigate()
     const dispatch = useDispatch()

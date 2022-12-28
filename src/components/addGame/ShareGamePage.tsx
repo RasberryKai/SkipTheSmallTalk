@@ -5,17 +5,20 @@ import { supabase } from "../../lib/Supabase"
 import { dbTables } from "../../constants/keys"
 import { showNotification } from "@mantine/notifications"
 import { useNavigate } from "react-router"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../types"
 import RemovableUserItem from "./RemovableUserItem"
+import { selectGameCreationId, selectGameCreationName } from "../../store/gameCreationSlice"
 
 export default function ShareGamePage() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const userId = useSelector((state: RootState) => state.user.id)
+    const gameId = useSelector((state: RootState) => state.gameCreation.gameId)
 
     const [users, setUsers] = useState<{ id: string; username: string }[]>([])
     const [currentUserError, setCurrentUserError] = useState<string>("")
-    const [currentUser, setCurrentUser] = useState<string>("")
+    const [currentUserInput, setCurrentUserInput] = useState<string>("")
 
     const handleRemove = (index: number) => {
         const values = [...users]
@@ -24,29 +27,44 @@ export default function ShareGamePage() {
     }
 
     const addUser = async () => {
-        setCurrentUserError("")
-        const errorMessage = await validateUser()
+        const { id, errorMessage, username } = await validateAndGetUser()
         if (errorMessage) {
             setCurrentUserError(errorMessage)
+            setCurrentUserInput("")
             return
         }
         const values = [...users]
-        values.push({ id: currentUser, username: currentUser })
+        values.push({ id: id, username: username })
         setUsers(values)
-        setCurrentUser("")
+        setCurrentUserError("")
+        setCurrentUserInput("")
     }
 
-    const validateUser = async () => {
-        if (currentUser.trim().length === 0) {
-            return "Username cannot be empty"
+    const isEmail = (email: string) => {
+        let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+        return regex.test(email)
+    }
+
+    const validateAndGetUser = async () => {
+        if (currentUserInput.trim().length === 0) return { id: "", errorMessage: "Username cannot be empty", username: "" }
+
+        if (isEmail(currentUserInput)) {
+            // check if email exists, and return id, and username
+            const { data, error } = await supabase.from(dbTables.profiles).select("id, username").eq("email", currentUserInput)
+            if (error) return { id: "", errorMessage: error.message, username: "" }
+            if (data.length === 0) return { id: "", errorMessage: "User does not exist", username: "" }
+            return { id: data[0].id, errorMessage: "", username: data[0].username }
         }
-        return null
+
+        // check if username exists, and return id, and username
+        const { data, error } = await supabase.from(dbTables.profiles).select("id").eq("username", currentUserInput)
+        if (error) return { id: "", errorMessage: error.message, username: "" }
+        if (data.length === 0) return { id: "", errorMessage: "User does not exist", username: "" }
+        return { id: data[0].id, errorMessage: "", username: currentUserInput }
     }
 
     const handleCreate = async () => {
         // register creating user as player to game in db
-        // TODO: Get game Id from redux
-        const gameId = ""
         const { error } = await supabase.from(dbTables.playerGamesJoin).insert({ player: userId, game: gameId })
         if (error) {
             console.log("Response Error: ", JSON.stringify(error, null, 2))
@@ -57,13 +75,20 @@ export default function ShareGamePage() {
             return
         }
         // register users to game in db
-        // TODO: Error handling
         for (const userObject of users) {
             const { error } = await supabase.from(dbTables.playerGamesJoin).insert({ player: userObject.id, game: gameId })
+            if (error)
+                showNotification({
+                    title: `Failed to add ${userObject.username} to game`,
+                    message: "",
+                    color: "red",
+                })
             console.log(error?.message)
         }
         // go home
         navigate("/")
+        dispatch(selectGameCreationName(""))
+        dispatch(selectGameCreationId(""))
     }
 
     return (
@@ -75,13 +100,12 @@ export default function ShareGamePage() {
                     size={"md"}
                     radius={"lg"}
                     className={"w-full mb-2"}
-                    value={currentUser}
+                    value={currentUserInput}
                     error={currentUserError}
-                    onChange={(event: any) => setCurrentUser(event.currentTarget.value)}
+                    onChange={(event: any) => setCurrentUserInput(event.currentTarget.value)}
                 />
                 <div className={"w-full flex flex-col justify-center pt-5 mb-4"}>
                     <div className={"flex flex-row justify-end"}>
-                        {/* TODO: On click validate user, and add */}
                         <ButtonWrapper className={"h-12"} variant={"actionable"} type={"submit"} onClick={addUser}>
                             Add User
                         </ButtonWrapper>

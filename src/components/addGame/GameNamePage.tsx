@@ -54,10 +54,11 @@ export default function GameNamePage() {
     return (
         <div className={"w-full mt-14"}>
             <TextInput
-                placeholder={"Game Name"}
-                className={"w-full mt-4"}
+                className={"w-full mt-4 text-actionable"}
                 size={"md"}
                 radius={"lg"}
+                label={"Game Name"}
+                placeholder={"Family"}
                 error={gameNameError}
                 value={gameName}
                 onChange={(event: any) => setGameName(event.currentTarget.value)}

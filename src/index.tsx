@@ -47,7 +47,52 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles withNormalizeCSS>
+            <MantineProvider
+                theme={{
+                    colorScheme: "dark",
+                    colors: {
+                        red: [
+                            "#fdd449",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                            "#ffe485",
+                        ],
+                        realRed: [
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                            "#FF0000",
+                        ],
+                    },
+                    components: {
+                        InputWrapper: {
+                            styles: {
+                                label: { color: "white" },
+                                error: { color: "#f9fb02" },
+                            },
+                        },
+                        Input: {
+                            styles: {
+                                error: { color: "#f9fb02" },
+                            },
+                        },
+                    },
+                }}
+                withGlobalStyles
+                withNormalizeCSS
+            >
                 <NotificationsProvider>
                     <Container>
                         <RouterProvider router={router} />
