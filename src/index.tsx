@@ -93,6 +93,18 @@ root.render(
                                 error: { color: "#f9fb02" },
                             },
                         },
+                        TextInput: {
+                            defaultProps: {
+                                variant: "filled",
+                                radius: "md",
+                            },
+                        },
+                        PasswordInput: {
+                            defaultProps: {
+                                variant: "filled",
+                                radius: "md",
+                            },
+                        },
                     },
                 }}
                 withGlobalStyles

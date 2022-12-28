@@ -9,6 +9,7 @@ import { emailAlreadyExists, usernameAlreadyExists } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
+import { Link } from "react-router-dom"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -107,6 +108,12 @@ export default function SignUp() {
                 Sign Up
             </ButtonWrapper>
             {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
+            <p className={"mt-4"}>
+                Already have an account?{" "}
+                <Link to={"/signIn"} className={"text-actionable"}>
+                    SignIn
+                </Link>
+            </p>
         </AuthContainer>
     )
 }
