@@ -5,11 +5,12 @@ import { supabase } from "../lib/Supabase"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import ButtonWrapper from "../components/common/ButtonWrapper"
-import { getCurrentUserId, getCurrentUsername } from "../api/user"
+import { emailAlreadyExists, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { useDispatch } from "react-redux"
 import { logIn } from "../store/userSlice"
 import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
+import { showNotification } from "@mantine/notifications"
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -50,7 +51,31 @@ export default function SignIn() {
         navigate("/")
     }
 
-    const handleReset = async () => {}
+    const handleReset = async () => {
+        setIsLoading(true)
+        console.log("Email: ", form.values.email)
+        if (!isEmail(form.values.email)) setErrorMessage("Invalid email")
+        if (!(await emailAlreadyExists(form.values.email))) setErrorMessage("Email does not exist")
+
+        const { error } = await supabase.auth.resetPasswordForEmail(form.values.email, {
+            redirectTo: "http://localhost:3000/resetPassword",
+        })
+        if (error) {
+            showNotification({
+                title: "Error",
+                message: error.message,
+                color: "realRed",
+            })
+            setIsLoading(false)
+            return
+        }
+        setIsLoading(false)
+        showNotification({
+            title: "Success",
+            message: "Check your email for a link to reset your password",
+            color: "green",
+        })
+    }
 
     return (
         <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
@@ -64,7 +89,7 @@ export default function SignIn() {
             />
             <PasswordInput label={"Password"} placeholder={"Password"} className={"w-full"} {...form.getInputProps("password")} />
             <div className={"flex flex-row w-full justify-start mt-2"}>
-                <p className={"text-sm mb-4"}>
+                <p className={"mb-4"}>
                     Forgot your password?{" "}
                     <span className={"cursor-pointer text-actionable"} onClick={handleReset}>
                         Reset

@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <Play />,
     },
     {
-        path: "/passwordReset",
+        path: "/resetPassword",
         element: <PasswordReset />,
     },
 ])
