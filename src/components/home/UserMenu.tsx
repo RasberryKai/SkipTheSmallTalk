@@ -1,5 +1,5 @@
 import { Menu } from "@mantine/core"
-import { IconSettings, IconLogout } from "@tabler/icons"
+import { IconLogout } from "@tabler/icons"
 import { useDispatch } from "react-redux"
 import { logOut } from "../../store/userSlice"
 import { useNavigate } from "react-router"
@@ -19,7 +19,6 @@ export default function UserMenu(props: UserMenu) {
             </Menu.Target>
 
             <Menu.Dropdown>
-                <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
                 <Menu.Item
                     color="realRed"
                     icon={<IconLogout size={14} />}
