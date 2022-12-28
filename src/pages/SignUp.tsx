@@ -24,6 +24,7 @@ export default function SignUp() {
                 if (value.length < 3) return "Username must be at least 3 characters"
                 return null
             },
+            password: (value) => (value.length > 0 ? null : "Password is required"),
         },
     })
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -79,8 +80,6 @@ export default function SignUp() {
             <TextInput
                 label={"Email"}
                 placeholder={"john.doe@gmail.com"}
-                withAsterisk={true}
-                required={true}
                 radius={"md"}
                 variant={"filled"}
                 autoFocus={true}
@@ -89,9 +88,7 @@ export default function SignUp() {
             />
             <TextInput
                 label={"Username"}
-                placeholder={"John Doe"}
-                withAsterisk={true}
-                required={true}
+                placeholder={"John"}
                 radius={"md"}
                 variant={"filled"}
                 className={"w-full mb-6"}
@@ -100,8 +97,6 @@ export default function SignUp() {
             <PasswordInput
                 label={"Password"}
                 placeholder={"********"}
-                withAsterisk={true}
-                required={true}
                 radius={"md"}
                 variant={"filled"}
                 className={"w-full mb-6"}
