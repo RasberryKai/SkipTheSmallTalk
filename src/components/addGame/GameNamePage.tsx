@@ -53,21 +53,24 @@ export default function GameNamePage() {
     }
     return (
         <div className={"w-full mt-14"}>
-            <TextInput
-                className={"w-full mt-4 text-actionable"}
-                size={"md"}
-                radius={"lg"}
-                label={"Game Name"}
-                placeholder={"Family"}
-                error={gameNameError}
-                value={gameName}
-                onChange={(event: any) => setGameName(event.currentTarget.value)}
-            />
-            <div className={"flex flex-row w-full justify-end"}>
-                <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[75%]"}>
-                    Next
-                </ButtonWrapper>
-            </div>
+            <form onSubmit={(e: any) => e.preventDefault()}>
+                <TextInput
+                    className={"w-full mt-4 text-actionable"}
+                    size={"md"}
+                    radius={"lg"}
+                    label={"Game Name"}
+                    placeholder={"Family"}
+                    autoFocus
+                    error={gameNameError}
+                    value={gameName}
+                    onChange={(event: any) => setGameName(event.currentTarget.value)}
+                />
+                <div className={"flex flex-row w-full justify-end"}>
+                    <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[82%]"} type={"submit"}>
+                        Next
+                    </ButtonWrapper>
+                </div>
+            </form>
         </div>
     )
 }

@@ -49,6 +49,8 @@ export default function ShareGamePage() {
 
     const validateAndGetUser = async () => {
         if (currentUserInput.trim().length === 0) return { id: "", errorMessage: "Username cannot be empty", username: "" }
+        for (let i = 0; i < users.length; i++)
+            if (users[i].username === currentUserInput) return { id: "", errorMessage: "User already added", username: "" }
 
         if (isEmail(currentUserInput)) {
             // check if email exists, and return id, and username
@@ -57,6 +59,8 @@ export default function ShareGamePage() {
             const { data, error } = await supabase.from(dbTables.profiles).select("id, username").eq("email", currentUserInput)
             if (error) return { id: "", errorMessage: error.message, username: "" }
             if (data.length === 0) return { id: "", errorMessage: "User does not exist", username: "" }
+            for (let i = 0; i < users.length; i++)
+                if (users[i].id === data[0].id) return { id: "", errorMessage: "User already added", username: "" }
             return { id: data[0].id, errorMessage: "", username: data[0].username }
         }
 
@@ -99,24 +103,26 @@ export default function ShareGamePage() {
     return (
         <>
             <div className={"w-full mt-14 h-full"}>
-                <TextInput
-                    placeholder={"Username / Email"}
-                    autoFocus={true}
-                    size={"md"}
-                    radius={"lg"}
-                    className={"w-full mb-2"}
-                    value={currentUserInput}
-                    error={currentUserError}
-                    onChange={(event: any) => setCurrentUserInput(event.currentTarget.value)}
-                />
-                <div className={"w-full flex flex-col justify-center pt-5 mb-4"}>
-                    <div className={"flex flex-row justify-end"}>
-                        <ButtonWrapper className={"h-12"} variant={"actionable"} type={"submit"} onClick={addUser}>
-                            Add User
-                        </ButtonWrapper>
+                <form onSubmit={(e: any) => e.preventDefault()}>
+                    <TextInput
+                        placeholder={"Username / Email"}
+                        autoFocus={true}
+                        size={"md"}
+                        radius={"lg"}
+                        className={"w-full mb-2"}
+                        value={currentUserInput}
+                        error={currentUserError}
+                        onChange={(event: any) => setCurrentUserInput(event.currentTarget.value)}
+                    />
+                    <div className={"w-full flex flex-col justify-center pt-5 mb-4"}>
+                        <div className={"flex flex-row justify-end"}>
+                            <ButtonWrapper className={"h-12"} variant={"actionable"} type={"submit"} onClick={addUser}>
+                                Add User
+                            </ButtonWrapper>
+                        </div>
                     </div>
-                </div>
-                <div className={"overflow-scroll h-4/5"}>
+                </form>
+                <div className={"overflow-scroll h-3/5"}>
                     {users.map((user, index) => (
                         <RemovableUserItem key={index} number={index + 1} onRemove={handleRemove}>
                             {user.username}
@@ -124,7 +130,7 @@ export default function ShareGamePage() {
                     ))}
                 </div>
             </div>
-            <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[92%]"}>
+            <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[82%]"}>
                 Finish
             </ButtonWrapper>
         </>
