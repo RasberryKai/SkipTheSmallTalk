@@ -14,6 +14,8 @@ export default function ShareGamePage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const userId = useSelector((state: RootState) => state.user.id)
+    const userEmail = useSelector((state: RootState) => state.user.email)
+    const userName = useSelector((state: RootState) => state.user.username)
     const gameId = useSelector((state: RootState) => state.gameCreation.gameId)
 
     const [users, setUsers] = useState<{ id: string; username: string }[]>([])
@@ -50,6 +52,8 @@ export default function ShareGamePage() {
 
         if (isEmail(currentUserInput)) {
             // check if email exists, and return id, and username
+            if (currentUserInput === userEmail)
+                return { id: "", errorMessage: "You can't share the game with yourself", username: "" }
             const { data, error } = await supabase.from(dbTables.profiles).select("id, username").eq("email", currentUserInput)
             if (error) return { id: "", errorMessage: error.message, username: "" }
             if (data.length === 0) return { id: "", errorMessage: "User does not exist", username: "" }
@@ -57,6 +61,7 @@ export default function ShareGamePage() {
         }
 
         // check if username exists, and return id, and username
+        if (currentUserInput === userName) return { id: "", errorMessage: "You can't share the game with yourself", username: "" }
         const { data, error } = await supabase.from(dbTables.profiles).select("id").eq("username", currentUserInput)
         if (error) return { id: "", errorMessage: error.message, username: "" }
         if (data.length === 0) return { id: "", errorMessage: "User does not exist", username: "" }
