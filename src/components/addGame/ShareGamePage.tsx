@@ -102,11 +102,12 @@ export default function ShareGamePage() {
 
     return (
         <>
-            <div className={"w-full mt-14 h-full"}>
+            <div className={"w-full pt-14 h-full"}>
                 <form onSubmit={(e: any) => e.preventDefault()}>
                     <TextInput
-                        placeholder={"Username / Email"}
-                        autoFocus={true}
+                        placeholder={"Enter username or email"}
+                        label={"Username / Email"}
+                        autoFocus
                         size={"md"}
                         radius={"lg"}
                         className={"w-full mb-2"}

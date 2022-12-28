@@ -52,10 +52,10 @@ export default function GameNamePage() {
         dispatch(selectGameCreationName(created.name))
     }
     return (
-        <div className={"w-full mt-14"}>
+        <div className={"w-full pt-14"}>
             <form onSubmit={(e: any) => e.preventDefault()}>
                 <TextInput
-                    className={"w-full mt-4 text-actionable"}
+                    className={"w-full text-actionable"}
                     size={"md"}
                     radius={"lg"}
                     label={"Game Name"}
