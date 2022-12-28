@@ -23,6 +23,7 @@ export default function SignIn() {
 
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+            password: (value) => (value.length > 0 ? null : "Password is required"),
         },
     })
 
@@ -41,35 +42,40 @@ export default function SignIn() {
         navigate("/")
     }
 
+    const handleReset = async () => {}
+
     return (
         <div className={"w-full h-screen flex flex-col items-center justify-center pb-32"}>
             <form
-                className={"w-11/12 h-2/3 bg-gray rounded-xl flex flex-col items-center pt-6"}
+                className={"w-11/12 h-2/3 bg-gray rounded-xl flex flex-col items-center pt-6 pl-4 pr-4"}
                 onSubmit={form.onSubmit(onSubmit)}
             >
                 <p className={"text-4xl mb-10"}>Sign In</p>
                 <TextInput
                     label={"Email"}
                     placeholder={"name@gmail.com"}
-                    withAsterisk={true}
-                    required={true}
                     radius={"md"}
                     variant={"filled"}
                     autoFocus={true}
-                    className={"w-11/12 mb-6"}
+                    className={"w-full mb-6"}
                     {...form.getInputProps("email")}
                 />
                 <PasswordInput
                     label={"Password"}
                     placeholder={"Password"}
-                    withAsterisk={true}
-                    required={true}
                     radius={"md"}
                     variant={"filled"}
-                    className={`w-11/12 ${errorMessage ? "mb-2" : "mb-6"}`}
+                    className={"w-full"}
                     {...form.getInputProps("password")}
                 />
-                {errorMessage && <p className={"text-red-600 mb-4"}>{errorMessage}</p>}
+                <div className={"flex flex-row w-full justify-start mt-2"}>
+                    <p className={"text-sm mb-4"}>
+                        Forgot your password?{" "}
+                        <span className={"cursor-pointer text-link"} onClick={handleReset}>
+                            Reset
+                        </span>
+                    </p>
+                </div>
                 <ButtonWrapper loading={isLoading} onClick={onSubmit} type={"submit"} variant={"actionable"} className={"w-1/2"}>
                     Login
                 </ButtonWrapper>
