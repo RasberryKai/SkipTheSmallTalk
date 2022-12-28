@@ -3,14 +3,18 @@ import { nextCard, previousCard } from "../../store/gameSlice"
 import { swipeableConfig } from "../../constants/config"
 import { useDispatch, useSelector } from "react-redux"
 import { Popover } from "@mantine/core"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function QuestionCard() {
     const dispatch = useDispatch()
-    const [opened, setOpened] = useState<boolean>(false)
     const currentCard = useSelector((state: any) => state.game.currentCard)
     const cardsDone = useSelector((state: any) => state.game.cardsDone)
     const cardsLeft = useSelector((state: any) => state.game.cardsLeft)
+
+    const [opened, setOpened] = useState<boolean>(false)
+    const [show, setShow] = useState<boolean>(true)
+    const [currentQuestion, setCurrentQuestion] = useState<string>("")
+
     const swipeableHandlers = useSwipeable({
         onSwipedLeft: () => {
             if (cardsLeft.length > 0) dispatch(nextCard())
@@ -28,6 +32,18 @@ export default function QuestionCard() {
         ...swipeableConfig,
     })
 
+    useEffect(() => {
+        setCurrentQuestion(currentCard)
+    }, [])
+
+    useEffect(() => {
+        setShow(false)
+        setTimeout(() => {
+            setShow(true)
+        }, 100)
+        setCurrentQuestion(currentCard)
+    }, [currentCard])
+
     return (
         <Popover width={90} position={"top"} withArrow opened={opened}>
             <Popover.Target>
@@ -37,7 +53,7 @@ export default function QuestionCard() {
                     }
                     {...swipeableHandlers}
                 >
-                    <p className={"text-black text-lg text-center"}>{currentCard}</p>
+                    {show && <p className={"text-black text-lg text-center animate-fade"}>{currentQuestion}</p>}
                 </div>
             </Popover.Target>
             <Popover.Dropdown>
