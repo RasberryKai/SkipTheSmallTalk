@@ -52,10 +52,18 @@ export default function SignIn() {
     }
 
     const handleReset = async () => {
+        setErrorMessage("")
+        if (!isEmail(form.values.email)) {
+            setErrorMessage("Invalid email")
+            setIsLoading(false)
+            return
+        }
+        if (!(await emailAlreadyExists(form.values.email))) {
+            setErrorMessage("Email does not exist")
+            setIsLoading(false)
+            return
+        }
         setIsLoading(true)
-        console.log("Email: ", form.values.email)
-        if (!isEmail(form.values.email)) setErrorMessage("Invalid email")
-        if (!(await emailAlreadyExists(form.values.email))) setErrorMessage("Email does not exist")
 
         const { error } = await supabase.auth.resetPasswordForEmail(form.values.email, {
             redirectTo: "http://localhost:3000/resetPassword",

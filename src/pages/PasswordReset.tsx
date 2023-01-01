@@ -1,7 +1,7 @@
 import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
 import { useState } from "react"
-import { Center, PasswordInput } from "@mantine/core"
+import { Center, PasswordInput, useMantineTheme } from "@mantine/core"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import { useForm } from "@mantine/form"
 import { supabase } from "../lib/Supabase"
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router"
 import { showNotification } from "@mantine/notifications"
 
 export default function PasswordReset() {
+    useMantineTheme().colorScheme = "dark"
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState<string | null>("")
     const form = useForm({
@@ -19,8 +20,6 @@ export default function PasswordReset() {
         validate: {
             password: (value) => (value.length > 0 ? null : "Password is required"),
             repeatedPassword: (value) => {
-                console.log(value)
-                console.log(value.length)
                 if (value.length === 0) return "Password is required"
                 if (value !== form.values.password) return "Passwords do not match"
             },
@@ -34,13 +33,12 @@ export default function PasswordReset() {
             return
         }
         if (data) {
-            console.log(JSON.stringify(data))
             showNotification({
                 title: "Password updated",
                 message: "Your password has been updated",
                 color: "green",
             })
-            navigate("/")
+            navigate("/signIn")
         }
     }
 
