@@ -4,12 +4,14 @@ import { supabase } from "../../lib/Supabase"
 import { dbTables } from "../../constants/keys"
 import { showNotification } from "@mantine/notifications"
 import ButtonWrapper from "../common/ButtonWrapper"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectGameCreationId, selectGameCreationName } from "../../store/gameCreationSlice"
+import { RootState } from "../../types"
 
 export default function GameNamePage() {
     const dispatch = useDispatch()
 
+    const userId = useSelector((state: RootState) => state.user.id)
     const [gameName, setGameName] = useState<string>("")
     const [gameNameError, setGameNameError] = useState<string>("")
 
@@ -28,6 +30,7 @@ export default function GameNamePage() {
             .from(dbTables.games)
             .insert({
                 name: gameName,
+                owner: userId,
             })
             .select()
         if (error) {
