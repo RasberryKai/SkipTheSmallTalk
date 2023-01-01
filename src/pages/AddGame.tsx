@@ -5,9 +5,10 @@ import { RootState } from "../types"
 import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
 import useNeedsToBeLoggedIn from "../hooks/useNeedsToBeLoggedIn"
-import ShareGamePage from "../components/addGame/ShareGamePage"
+import AddPlayersGamePage from "../components/addGame/AddPlayersGamePage"
 import GameNamePage from "../components/addGame/GameNamePage"
 import { selectGameCreationId, selectGameCreationName } from "../store/gameCreationSlice"
+import { supabase } from "../lib/Supabase"
 
 export default function AddGame() {
     useNeedsToBeLoggedIn()
@@ -16,21 +17,22 @@ export default function AddGame() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const gameName = useSelector((state: RootState) => state.gameCreation.gameName)
+    const gameId = useSelector((state: RootState) => state.gameCreation.gameId)
     const handleBack = () => {
-        if (gameName) {
+        if (gameId) {
             dispatch(selectGameCreationId(""))
-            dispatch(selectGameCreationName(""))
+            supabase.from("games").delete().eq("id", gameId).then()
         } else {
+            dispatch(selectGameCreationName(""))
             navigate(-1)
         }
     }
 
     return (
         <>
-            <Header onClick={handleBack}>{gameName ? "Share Game!" : "Create your Game!"}</Header>
+            <Header onClick={handleBack}>{gameId ? "Add Players!" : "Create your Game!"}</Header>
             <div className={"flex flex-col w-full h-4/5 justify-between items-end"}>
-                {gameName ? <ShareGamePage /> : <GameNamePage />}
+                {gameId ? <AddPlayersGamePage /> : <GameNamePage />}
             </div>
         </>
     )

@@ -10,7 +10,7 @@ import { RootState } from "../../types"
 import RemovableUserItem from "./RemovableUserItem"
 import { selectGameCreationId, selectGameCreationName } from "../../store/gameCreationSlice"
 
-export default function ShareGamePage() {
+export default function AddPlayersGamePage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const userId = useSelector((state: RootState) => state.user.id)

@@ -12,7 +12,8 @@ export default function GameNamePage() {
     const dispatch = useDispatch()
 
     const userId = useSelector((state: RootState) => state.user.id)
-    const [gameName, setGameName] = useState<string>("")
+    const existingGameName = useSelector((state: RootState) => state.gameCreation.gameName)
+    const [gameName, setGameName] = useState<string>(existingGameName ? existingGameName : "")
     const [gameNameError, setGameNameError] = useState<string>("")
 
     const validate = () => {
