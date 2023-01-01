@@ -4,7 +4,7 @@ import { deleteGame } from "../../api/games"
 import { showNotification } from "@mantine/notifications"
 import { useNavigate } from "react-router"
 
-export default function Options(props: { id: string }) {
+export default function Options(props: { id: string; isOwner: boolean }) {
     const navigate = useNavigate()
     useMantineTheme().colorScheme = "dark"
 
@@ -35,6 +35,7 @@ export default function Options(props: { id: string }) {
                                     }
                                     navigate(0)
                                 }}
+                                disabled={!props.isOwner}
                             >
                                 Delete
                             </Menu.Item>

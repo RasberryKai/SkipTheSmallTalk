@@ -117,7 +117,6 @@ export default function Home() {
     useEffect(() => {
         ;(async () => {
             const games = await getGames()
-            console.log(games)
             if (games) dispatch(setGames(games))
         })()
     }, [user.email])
@@ -143,6 +142,8 @@ export default function Home() {
                             name={game.name}
                             playerNames={game.players}
                             percentage={game.percentage}
+                            owner={game.owner}
+                            isOwner={game.owner === user.username}
                             onClick={() => {
                                 if (levelGameId) {
                                     navigate("/play")
