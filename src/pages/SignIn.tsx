@@ -11,6 +11,7 @@ import { logIn } from "../store/userSlice"
 import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
 import { showNotification } from "@mantine/notifications"
+import AppContainer from "../components/common/AppContainer"
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -86,34 +87,41 @@ export default function SignIn() {
     }
 
     return (
-        <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-            <AuthHeader>Sign In</AuthHeader>
-            <TextInput
-                label={"Email"}
-                placeholder={"name@gmail.com"}
-                autoFocus={true}
-                className={"w-full mb-6"}
-                {...form.getInputProps("email")}
-            />
-            <PasswordInput label={"Password"} placeholder={"Password"} className={"w-full"} {...form.getInputProps("password")} />
-            <div className={"flex flex-row w-full justify-start mt-2"}>
-                <p className={"mb-4"}>
-                    Forgot your password?{" "}
-                    <span className={"cursor-pointer text-actionable"} onClick={handleReset}>
-                        Reset
-                    </span>
+        <AppContainer>
+            <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
+                <AuthHeader>Sign In</AuthHeader>
+                <TextInput
+                    label={"Email"}
+                    placeholder={"name@gmail.com"}
+                    autoFocus={true}
+                    className={"w-full mb-6"}
+                    {...form.getInputProps("email")}
+                />
+                <PasswordInput
+                    label={"Password"}
+                    placeholder={"Password"}
+                    className={"w-full"}
+                    {...form.getInputProps("password")}
+                />
+                <div className={"flex flex-row w-full justify-start mt-2"}>
+                    <p className={"mb-4"}>
+                        Forgot your password?{" "}
+                        <span className={"cursor-pointer text-actionable"} onClick={handleReset}>
+                            Reset
+                        </span>
+                    </p>
+                </div>
+                <ButtonWrapper loading={isLoading} onClick={onSubmit} type={"submit"} variant={"actionable"} className={"w-1/2"}>
+                    Login
+                </ButtonWrapper>
+                {errorMessage && <p className={"text-base text-red-500 mt-2"}>{errorMessage}</p>}
+                <p className={errorMessage ? "mt-12" : "mt-20"}>
+                    Don't have an account?{" "}
+                    <Link to={"/signUp"} className={"text-actionable"}>
+                        Signup
+                    </Link>
                 </p>
-            </div>
-            <ButtonWrapper loading={isLoading} onClick={onSubmit} type={"submit"} variant={"actionable"} className={"w-1/2"}>
-                Login
-            </ButtonWrapper>
-            {errorMessage && <p className={"text-base text-red-500 mt-2"}>{errorMessage}</p>}
-            <p className={errorMessage ? "mt-12" : "mt-20"}>
-                Don't have an account?{" "}
-                <Link to={"/signUp"} className={"text-actionable"}>
-                    Signup
-                </Link>
-            </p>
-        </AuthContainer>
+            </AuthContainer>
+        </AppContainer>
     )
 }

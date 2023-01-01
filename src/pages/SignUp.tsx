@@ -10,6 +10,7 @@ import { dbTables } from "../constants/keys"
 import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
 import { Link } from "react-router-dom"
+import AppContainer from "../components/common/AppContainer"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -78,43 +79,51 @@ export default function SignUp() {
     }
 
     return (
-        <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-            <AuthHeader>Sign Up</AuthHeader>
-            <TextInput
-                label={"Email"}
-                placeholder={"john.doe@gmail.com"}
-                radius={"md"}
-                variant={"filled"}
-                autoFocus={true}
-                className={"w-full mb-6"}
-                {...form.getInputProps("email")}
-            />
-            <TextInput
-                label={"Username"}
-                placeholder={"John"}
-                radius={"md"}
-                variant={"filled"}
-                className={"w-full mb-6"}
-                {...form.getInputProps("username")}
-            />
-            <PasswordInput
-                label={"Password"}
-                placeholder={"********"}
-                radius={"md"}
-                variant={"filled"}
-                className={"w-full mb-6"}
-                {...form.getInputProps("password")}
-            />
-            <ButtonWrapper disabled={isDisabled} loading={isLoading} variant={"actionable"} type={"submit"} className={"w-1/2"}>
-                Sign Up
-            </ButtonWrapper>
-            {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
-            <p className={"mt-4"}>
-                Already have an account?{" "}
-                <Link to={"/signIn"} className={"text-actionable"}>
-                    SignIn
-                </Link>
-            </p>
-        </AuthContainer>
+        <AppContainer>
+            <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
+                <AuthHeader>Sign Up</AuthHeader>
+                <TextInput
+                    label={"Email"}
+                    placeholder={"john.doe@gmail.com"}
+                    radius={"md"}
+                    variant={"filled"}
+                    autoFocus={true}
+                    className={"w-full mb-6"}
+                    {...form.getInputProps("email")}
+                />
+                <TextInput
+                    label={"Username"}
+                    placeholder={"John"}
+                    radius={"md"}
+                    variant={"filled"}
+                    className={"w-full mb-6"}
+                    {...form.getInputProps("username")}
+                />
+                <PasswordInput
+                    label={"Password"}
+                    placeholder={"********"}
+                    radius={"md"}
+                    variant={"filled"}
+                    className={"w-full mb-6"}
+                    {...form.getInputProps("password")}
+                />
+                <ButtonWrapper
+                    disabled={isDisabled}
+                    loading={isLoading}
+                    variant={"actionable"}
+                    type={"submit"}
+                    className={"w-1/2"}
+                >
+                    Sign Up
+                </ButtonWrapper>
+                {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
+                <p className={"mt-4"}>
+                    Already have an account?{" "}
+                    <Link to={"/signIn"} className={"text-actionable"}>
+                        SignIn
+                    </Link>
+                </p>
+            </AuthContainer>
+        </AppContainer>
     )
 }

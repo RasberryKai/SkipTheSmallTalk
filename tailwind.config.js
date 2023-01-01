@@ -12,6 +12,7 @@ module.exports = {
                 accent: "#fff",
                 gray: "#1a1c1e",
                 actionable: "#197aff",
+                errorPage: "#d75032",
             },
             backgroundImage: {
                 login: "url('/public/Login2.jpg')",

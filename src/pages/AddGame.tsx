@@ -9,6 +9,7 @@ import AddPlayersGamePage from "../components/addGame/AddPlayersGamePage"
 import GameNamePage from "../components/addGame/GameNamePage"
 import { selectGameCreationId, selectGameCreationName } from "../store/gameCreationSlice"
 import { supabase } from "../lib/Supabase"
+import AppContainer from "../components/common/AppContainer"
 
 export default function AddGame() {
     useNeedsToBeLoggedIn()
@@ -29,11 +30,11 @@ export default function AddGame() {
     }
 
     return (
-        <>
+        <AppContainer>
             <Header onClick={handleBack}>{gameId ? "Add Players!" : "Create your Game!"}</Header>
             <div className={"flex flex-col w-full h-4/5 justify-between items-end"}>
                 {gameId ? <AddPlayersGamePage /> : <GameNamePage />}
             </div>
-        </>
+        </AppContainer>
     )
 }

@@ -7,3 +7,5 @@ export const swipeableConfig = {
     swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
     touchEventOptions: { passive: true }, // options for touch listener (*See Details*)
 }
+
+export const containedPaths = ["/", "/signIn", "/signUp", "/select", "/play", "/resetPassword", "/addGame"]

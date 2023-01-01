@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Home from "./pages/Home"
 import { Provider } from "react-redux"
 import { persistor, store } from "./store/store"
-import Container from "./components/common/Container"
 import SignUp from "./pages/SignUp"
 import SignIn from "./pages/SignIn"
 import { MantineProvider } from "@mantine/core"
@@ -16,6 +15,7 @@ import Selection from "./pages/Selection"
 import { PersistGate } from "redux-persist/integration/react"
 import Play from "./pages/Play"
 import PasswordReset from "./pages/PasswordReset"
+import Error404 from "./pages/Error404"
 
 const router = createBrowserRouter([
     {
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
     {
         path: "/resetPassword",
         element: <PasswordReset />,
+    },
+    {
+        path: "*",
+        element: <Error404 />,
     },
 ])
 
@@ -111,9 +115,7 @@ root.render(
                 withNormalizeCSS
             >
                 <NotificationsProvider>
-                    <Container>
-                        <RouterProvider router={router} />
-                    </Container>
+                    <RouterProvider router={router} />
                 </NotificationsProvider>
             </MantineProvider>
         </PersistGate>
