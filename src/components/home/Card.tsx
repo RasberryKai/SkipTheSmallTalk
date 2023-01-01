@@ -20,7 +20,7 @@ export default function Card(props: CardProps) {
                     {props.owner && <p className={"text-black text-lg flex items-start justify-start"}>Owner: {props.owner}</p>}
                     {props.playerNames && props.playerNames.length > 0 && (
                         <p className={"text-black text-lg flex items-start justify-start"}>
-                            Shared with: {props.playerNames.join(", ")}
+                            Players: {props.playerNames.join(", ")}
                         </p>
                     )}
                 </div>
