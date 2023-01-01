@@ -23,7 +23,8 @@ export type wildcard = string | null | undefined
 export type DisplayGame = {
     id: string
     name: string
-    player_names: string[]
+    owner: string
+    players: string[]
     percentage: number
 }
 

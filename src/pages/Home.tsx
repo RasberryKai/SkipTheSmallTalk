@@ -45,62 +45,80 @@ export default function Home() {
         })
     }, [])
 
-    // populate store with games from database
+    const getGames = async () => {
+        const playerGamesJoinResponse = await supabase.from(dbTables.playerGamesJoin).select("*").eq("player", user.id)
+        if (playerGamesJoinResponse.error) {
+            console.log("Error while fetching participation: " + playerGamesJoinResponse.error.message)
+            return
+        }
+        if (!playerGamesJoinResponse.data) {
+            console.log("No participation found")
+            return
+        }
+        const gameIds: string[] = playerGamesJoinResponse.data.map((participation) => participation.game)
+        const gamesResponse = await supabase.from(dbTables.games).select("id, name, owner").in("id", gameIds)
+        if (gamesResponse.error) {
+            console.log("Error while fetching games: " + gamesResponse.error.message)
+            return
+        }
+        if (!gamesResponse.data) {
+            console.log("No games found")
+            return
+        }
+        /*
+        1. All player ids, where game id is in gameIds --> We only need the names of the players
+         */
+        const participantsAndOwnersResponse = await supabase
+            .from(dbTables.playerGamesJoin)
+            .select("player, game")
+            .in("game", gameIds)
+        if (participantsAndOwnersResponse.error) {
+            console.log("Error while fetching participants: " + participantsAndOwnersResponse.error.message)
+            return
+        }
+        if (!participantsAndOwnersResponse.data) {
+            console.log("No participants found")
+            return
+        }
+        const participantNamesResponse = await supabase
+            .from(dbTables.profiles)
+            .select("id, username")
+            .in(
+                "id",
+                participantsAndOwnersResponse.data.map((p) => p.player)
+            )
+        if (participantNamesResponse.error) {
+            console.log("Error while fetching participant names: " + participantNamesResponse.error.message)
+            return
+        }
+        if (!participantNamesResponse.data) {
+            console.log("No participant names found")
+            return
+        }
+        const gamesArray: DisplayGame[] = []
+        for (const game of gamesResponse.data) {
+            const participantIds = participantsAndOwnersResponse.data.filter((p) => p.game === game.id)
+            const ownerId = participantIds.find((p) => p.player === game.owner)
+            const playerIds = participantIds.filter((p) => p.player !== game.owner)
+            const owner = participantNamesResponse.data.find((p) => p.id === ownerId?.player)?.username
+            const players = participantNamesResponse.data.filter((p) => playerIds.map((p) => p.player).includes(p.id))
+            const displayGame: DisplayGame = {
+                id: game.id,
+                name: game.name,
+                owner: owner,
+                players: players.map((p) => p.username),
+                percentage: 10,
+            }
+            gamesArray.push(displayGame)
+        }
+        return gamesArray
+    }
+
     useEffect(() => {
         ;(async () => {
-            if (!user.id) {
-                console.log("Game Data No id Found")
-                return
-            }
-            // Fetching Join Table game ids
-            const { data, error } = await supabase.from(dbTables.playerGamesJoin).select("game").eq("player", user.id)
-            if (error) {
-                console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
-                return
-            }
-            const gameIds: string[] = []
-            if (!data || data?.length === 0) {
-                console.log("No games found for user")
-                await dispatch(setGames([]))
-                return
-            }
-            for (const game of data) gameIds.push(game.game)
-
-            // Fetching games, which match the game ids from the join table
-            const response = await supabase.from(dbTables.games).select("id, name").in("id", gameIds)
-            if (response.error) {
-                console.log("Error: ", JSON.stringify(response.error, null, 2))
-                return
-            }
-            if (!response.data) return
-            let games: DisplayGame[] = []
-            for (const game of response.data) {
-                const { data, error } = await supabase.from(dbTables.playerGamesJoin).select("player").eq("game", game.id)
-                if (error) {
-                    console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
-                    continue
-                }
-                if (!data || data?.length === 0) {
-                    console.log("No join data")
-                    continue
-                }
-                const playerNames: string[] = []
-                // Fetching player names from profile table
-                for (const player of data) {
-                    const { data, error } = await supabase.from(dbTables.profiles).select("username").eq("id", player.player)
-                    if (error) {
-                        console.log("Error while fetching PlayerGamesJoin: ", JSON.stringify(error, null, 2))
-                        continue
-                    }
-                    if (!data || data?.length === 0) {
-                        console.log("No join data")
-                        continue
-                    }
-                    playerNames.push(data[0].username)
-                }
-                games = [...games, { name: game.name, player_names: playerNames, percentage: 69, id: game.id }]
-            }
-            dispatch(setGames(games))
+            const games = await getGames()
+            console.log(games)
+            if (games) dispatch(setGames(games))
         })()
     }, [user.email])
 
@@ -123,7 +141,7 @@ export default function Home() {
                     user.games.map((game: DisplayGame, index: number) => (
                         <Card
                             name={game.name}
-                            playerNames={game.player_names}
+                            playerNames={game.players}
                             percentage={game.percentage}
                             onClick={() => {
                                 if (levelGameId) {
