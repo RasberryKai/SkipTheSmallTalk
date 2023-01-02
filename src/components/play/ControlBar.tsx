@@ -11,13 +11,13 @@ export default function ControlBar() {
     const cardsLeft = useSelector((state: RootState) => state.game.cardsLeft)
 
     return (
-        <div className={"flex flex-row w-full justify-between items-center"}>
+        <div className={"flex flex-row w-full justify-between items-center w-[90%]"}>
             <RoundIconButton
                 onClick={() => {
                     if (cardsDone.length > 0) dispatch(previousCard())
                 }}
             >
-                <IconChevronLeft size={60} color={"#464545"} className={"mr-2"} />
+                <IconChevronLeft size={45} color={"#464545"} className={"mr-2"} />
             </RoundIconButton>
             <ActionBar />
             <RoundIconButton
@@ -25,7 +25,7 @@ export default function ControlBar() {
                     if (cardsLeft.length > 0) dispatch(nextCard())
                 }}
             >
-                <IconChevronRight size={60} color={"#464545"} className={"ml-2"} />
+                <IconChevronRight size={45} color={"#464545"} className={"ml-2"} />
             </RoundIconButton>
         </div>
     )
