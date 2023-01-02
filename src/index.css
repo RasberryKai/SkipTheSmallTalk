@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilites {
+  .glasmorphism {
+    background: rgba(44, 42, 59, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10.3px);
+    -webkit-backdrop-filter: blur(10.3px);
+    border: 1px solid rgba(44, 42, 59, 0.3);
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
