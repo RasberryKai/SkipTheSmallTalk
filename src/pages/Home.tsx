@@ -12,6 +12,7 @@ import UserMenu from "../components/home/UserMenu"
 import { clearGame, selectGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { dbTables } from "../constants/keys"
+import AppContainer from "../components/common/AppContainer"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
@@ -122,7 +123,7 @@ export default function Home() {
     }, [user.email])
 
     return (
-        <>
+        <AppContainer>
             {/* Header Container */}
             <div className={"mb-2 flex flex-row justify-between items-end"}>
                 <p className={"text-4xl text-accent"}>Select a Game!</p>
@@ -165,6 +166,6 @@ export default function Home() {
                     ))}
                 <AddButton />
             </div>
-        </>
+        </AppContainer>
     )
 }

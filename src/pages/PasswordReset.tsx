@@ -6,8 +6,8 @@ import ButtonWrapper from "../components/common/ButtonWrapper"
 import { useForm } from "@mantine/form"
 import { supabase } from "../lib/Supabase"
 import { useNavigate } from "react-router"
+import AppContainer from "../components/common/AppContainer"
 import { showNotification } from "@mantine/notifications"
-
 export default function PasswordReset() {
     useMantineTheme().colorScheme = "dark"
     const navigate = useNavigate()
@@ -43,28 +43,30 @@ export default function PasswordReset() {
     }
 
     return (
-        <AuthContainer onSubmit={form.onSubmit((values: any) => updatePassword(values))}>
-            <AuthHeader>Password Reset</AuthHeader>
-            <div className={"w-full h-full flex flex-col"}>
-                <PasswordInput
-                    className={"w-full mb-4"}
-                    label={"Password"}
-                    placeholder={"******"}
-                    {...form.getInputProps("password")}
-                />
-                <PasswordInput
-                    className={"w-full mb-8"}
-                    label={"Repeat Password"}
-                    placeholder={"******"}
-                    {...form.getInputProps("repeatedPassword")}
-                />
-                <Center>
-                    <ButtonWrapper className={"w-2/3"} variant={"actionable"} type={"submit"}>
-                        Update Password
-                    </ButtonWrapper>
-                </Center>
-                {errorMessage && <p className={"text-red-500 text-center mt-8"}>{errorMessage}</p>}
-            </div>
-        </AuthContainer>
+        <AppContainer>
+            <AuthContainer onSubmit={form.onSubmit((values: any) => updatePassword(values))}>
+                <AuthHeader>Password Reset</AuthHeader>
+                <div className={"w-full h-full flex flex-col"}>
+                    <PasswordInput
+                        className={"w-full mb-4"}
+                        label={"Password"}
+                        placeholder={"******"}
+                        {...form.getInputProps("password")}
+                    />
+                    <PasswordInput
+                        className={"w-full mb-8"}
+                        label={"Repeat Password"}
+                        placeholder={"******"}
+                        {...form.getInputProps("repeatedPassword")}
+                    />
+                    <Center>
+                        <ButtonWrapper className={"w-2/3"} variant={"actionable"} type={"submit"}>
+                            Update Password
+                        </ButtonWrapper>
+                    </Center>
+                    {errorMessage && <p className={"text-red-500 text-center mt-8"}>{errorMessage}</p>}
+                </div>
+            </AuthContainer>
+        </AppContainer>
     )
 }

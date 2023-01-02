@@ -10,6 +10,7 @@ import { cardObjectsToStrings, getSplitCards, sortCards } from "../functions/car
 import { getCard, getCards } from "../api/cards"
 import { dbTables } from "../constants/keys"
 import SelectionHeader from "../components/selection/SelectionHeader"
+import AppContainer from "../components/common/AppContainer"
 
 export default function Selection() {
     const dispatch = useDispatch()
@@ -150,7 +151,7 @@ export default function Selection() {
     }
 
     return (
-        <>
+        <AppContainer>
             <SelectionHeader onClick={goBack}>Start your Game!</SelectionHeader>
             <div className={"mb-4"} />
             <div>
@@ -165,6 +166,6 @@ export default function Selection() {
                     )
                 })}
             </div>
-        </>
+        </AppContainer>
     )
 }
