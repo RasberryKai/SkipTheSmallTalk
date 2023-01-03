@@ -11,7 +11,7 @@ export default function SelectionCard(props: SelectionCardProps) {
             onClick={props.onClick}
         >
             <p className={"text-2xl text-black font-bold"}>{props.name}</p>
-            <p className={"text-lg text-black mt-8"}>{props.description}</p>
+            <p className={"text-base text-black mt-4 mr-4 ml-4 text-center"}>{props.description}</p>
         </div>
     )
 }
