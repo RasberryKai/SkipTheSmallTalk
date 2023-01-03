@@ -4,11 +4,13 @@ export default function AddButton() {
     const navigate = useNavigate()
 
     return (
-        <img
-            className={"h-28 w-auto mt-4"}
-            alt={"Add Button"}
-            src={require("../../assets/AddButton.png")}
-            onClick={() => navigate("/addGame")}
-        />
+        <div className={"h-28 w-28 mt-4 glasmorphism flex justify-center items-center"}>
+            <img
+                className={"h-20 w-auto"}
+                alt={"Add Button"}
+                src={require("../../assets/AddButton.png")}
+                onClick={() => navigate("/addGame")}
+            />
+        </div>
     )
 }
