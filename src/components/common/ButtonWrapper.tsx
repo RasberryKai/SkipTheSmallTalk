@@ -29,7 +29,7 @@ export default function ButtonWrapper(props: ButtonProps) {
     return (
         <Button
             onClick={props.onClick}
-            className={`bg-white text-primary-dark ${props.className} active:bg-white`}
+            className={`bg-white text-primary-dark ${props.className} active:bg-white hover:bg-hoveredWhite`}
             type={props.type}
             loading={props.loading}
             disabled={props.disabled}
