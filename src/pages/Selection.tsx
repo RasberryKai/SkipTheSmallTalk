@@ -39,7 +39,11 @@ export default function Selection() {
     }
 
     const renderLevels = async () => {
-        const { data, error } = await supabase.from(dbTables.levels).select("*").eq("deck", deck)
+        const { data, error } = await supabase
+            .from(dbTables.levels)
+            .select("*")
+            .eq("deck", deck)
+            .order("level_number", { ascending: true })
         if (error) {
             console.log("Error while getting games: ", error)
             return
