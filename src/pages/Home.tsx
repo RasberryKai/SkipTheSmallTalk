@@ -146,13 +146,12 @@ export default function Home() {
                             owner={game.owner}
                             isOwner={game.owner === user.username}
                             onClick={() => {
-                                console.log("GameId: " + game.id + " UserId: " + user.id)
                                 if (!game.owner)
                                     supabase
                                         .from(dbTables.games)
                                         .update({ owner: user.id })
                                         .eq("id", game.id)
-                                        .then(() => console.log("updated"))
+                                        .then(() => {})
                                 if (levelGameId) {
                                     navigate("/play")
                                 } else {
