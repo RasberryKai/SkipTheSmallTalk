@@ -70,7 +70,7 @@ export default function GameNamePage() {
                     onChange={(event: any) => setGameName(event.currentTarget.value)}
                 />
                 <div className={"flex flex-row w-full justify-end"}>
-                    <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[82%]"} type={"submit"}>
+                    <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 mt-8"} type={"submit"}>
                         Next
                     </ButtonWrapper>
                 </div>
