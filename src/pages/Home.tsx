@@ -44,6 +44,7 @@ export default function Home() {
         updateUserInfo().then(() => {
             if (!loggedIn) navigate("/signIn")
         })
+        dispatch(clearGame())
     }, [])
 
     const getGames = async () => {
