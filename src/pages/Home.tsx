@@ -13,6 +13,7 @@ import { clearGame, selectGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AppContainer from "../components/common/AppContainer"
+import { getGamesFromDB } from "../api/games"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
@@ -41,85 +42,19 @@ export default function Home() {
     }
 
     useEffect(() => {
-        updateUserInfo().then(() => {
-            if (!loggedIn) navigate("/signIn")
-        })
-        dispatch(clearGame())
+        updateUserInfo().then(() => {})
+        // clear game state when users logged in (all saved in DB anyway)
+        if (loggedIn) dispatch(clearGame())
     }, [])
 
-    const getGames = async () => {
-        const playerGamesJoinResponse = await supabase.from(dbTables.playerGamesJoin).select("*").eq("player", user.id)
-        if (playerGamesJoinResponse.error) {
-            console.log("Error while fetching participation: " + playerGamesJoinResponse.error.message)
-            return
-        }
-        if (!playerGamesJoinResponse.data) {
-            console.log("No participation found")
-            return
-        }
-        const gameIds: string[] = playerGamesJoinResponse.data.map((participation) => participation.game)
-        const gamesResponse = await supabase.from(dbTables.games).select("id, name, owner").in("id", gameIds)
-        if (gamesResponse.error) {
-            console.log("Error while fetching games: " + gamesResponse.error.message)
-            return
-        }
-        if (!gamesResponse.data) {
-            console.log("No games found")
-            return
-        }
-        /*
-        1. All player ids, where game id is in gameIds --> We only need the names of the players
-         */
-        const participantsAndOwnersResponse = await supabase
-            .from(dbTables.playerGamesJoin)
-            .select("player, game")
-            .in("game", gameIds)
-        if (participantsAndOwnersResponse.error) {
-            console.log("Error while fetching participants: " + participantsAndOwnersResponse.error.message)
-            return
-        }
-        if (!participantsAndOwnersResponse.data) {
-            console.log("No participants found")
-            return
-        }
-        const participantNamesResponse = await supabase
-            .from(dbTables.profiles)
-            .select("id, username")
-            .in(
-                "id",
-                participantsAndOwnersResponse.data.map((p) => p.player)
-            )
-        if (participantNamesResponse.error) {
-            console.log("Error while fetching participant names: " + participantNamesResponse.error.message)
-            return
-        }
-        if (!participantNamesResponse.data) {
-            console.log("No participant names found")
-            return
-        }
-        const gamesArray: DisplayGame[] = []
-        for (const game of gamesResponse.data) {
-            const participantIds = participantsAndOwnersResponse.data.filter((p) => p.game === game.id)
-            const ownerId = participantIds.find((p) => p.player === game.owner)
-            const playerIds = participantIds.filter((p) => p.player !== game.owner)
-            const owner = participantNamesResponse.data.find((p) => p.id === ownerId?.player)?.username
-            const players = participantNamesResponse.data.filter((p) => playerIds.map((p) => p.player).includes(p.id))
-            const displayGame: DisplayGame = {
-                id: game.id,
-                name: game.name,
-                owner: owner,
-                players: players.map((p) => p.username),
-                percentage: 10,
-            }
-            gamesArray.push(displayGame)
-        }
-        return gamesArray
-    }
-
     useEffect(() => {
+        // Load games from DB, when user's logged in / if userId exists
+        // on user.email, because it runs on mount, and whenever the email is loaded (after login)
         ;(async () => {
-            const games = await getGames()
-            if (games) dispatch(setGames(games))
+            if (user.id) {
+                const games = await getGamesFromDB(user.id)
+                if (games) dispatch(setGames(games))
+            }
         })()
     }, [user.email])
 
