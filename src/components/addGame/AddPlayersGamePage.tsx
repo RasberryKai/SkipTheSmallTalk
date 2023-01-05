@@ -131,7 +131,7 @@ export default function AddPlayersGamePage() {
                     ))}
                 </div>
             </div>
-            <ButtonWrapper onClick={handleCreate} className={"w-2/5 h-12 absolute top-[82%]"}>
+            <ButtonWrapper onClick={handleCreate} className={"w-48 h-12 absolute top-[82%]"}>
                 Finish
             </ButtonWrapper>
         </>
