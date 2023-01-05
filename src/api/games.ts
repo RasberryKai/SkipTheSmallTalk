@@ -34,8 +34,7 @@ export async function createGame(gameName: string, ownerId: string) {
     return data[0]
 }
 
-// TODO: Return all info instead of DisplayGame
-export async function getGamesFromDB(userId: string) {
+export async function getGamesFromDBAsDisplayGames(userId: string) {
     const playerGamesJoinResponse = await supabase.from(dbTables.playerGamesJoin).select("*").eq("player", userId)
     if (playerGamesJoinResponse.error) {
         console.log("Error while fetching participation: " + playerGamesJoinResponse.error.message)
@@ -56,8 +55,8 @@ export async function getGamesFromDB(userId: string) {
         return
     }
     /*
-        1. All player ids, where game id is in gameIds --> We only need the names of the players
-         */
+    1. All player ids, where game id is in gameIds --> We only need the names of the players
+     */
     const participantsAndOwnersResponse = await supabase.from(dbTables.playerGamesJoin).select("player, game").in("game", gameIds)
     if (participantsAndOwnersResponse.error) {
         console.log("Error while fetching participants: " + participantsAndOwnersResponse.error.message)

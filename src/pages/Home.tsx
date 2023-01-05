@@ -13,7 +13,7 @@ import { clearGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AppContainer from "../components/common/AppContainer"
-import { getGamesFromDB } from "../api/games"
+import { getGamesFromDBAsDisplayGames } from "../api/games"
 import { clearGameSelection, updateGame } from "../store/gameSelectionSlice"
 
 export default function Home() {
@@ -53,7 +53,7 @@ export default function Home() {
             }
             if (loggedIn && user.id) {
                 // load games, if user logged in successfully
-                getGamesFromDB(user.id).then((games) => {
+                getGamesFromDBAsDisplayGames(user.id).then((games) => {
                     if (games) dispatch(updateGames(games))
                 })
             }
