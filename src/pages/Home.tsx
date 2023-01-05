@@ -1,20 +1,19 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
-import { Divider, useMantineTheme } from "@mantine/core"
+import { useMantineTheme } from "@mantine/core"
 import Card from "../components/home/Card"
 import { DisplayGame, RootState } from "../types"
 import { useEffect } from "react"
 import { supabase } from "../lib/Supabase"
 import { logIn, logOut, updateGames, UserState } from "../store/userSlice"
 import AddButton from "../components/home/AddButton"
-import ButtonWrapper from "../components/common/ButtonWrapper"
-import UserMenu from "../components/home/UserMenu"
 import { clearGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername, isGoogleUser } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AppContainer from "../components/common/AppContainer"
 import { getGamesFromDBAsDisplayGames } from "../api/games"
 import { clearGameSelection, updateGame } from "../store/gameSelectionSlice"
+import GameSectionHeader from "../components/home/GameSectionHeader"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
@@ -63,6 +62,21 @@ export default function Home() {
         }
     }
 
+    const handleCardClick = (owner: string, id: string) => {
+        if (!owner)
+            supabase
+                .from(dbTables.games)
+                .update({ owner: user.id })
+                .eq("id", id)
+                .then(() => {})
+        if (levelGameId) {
+            navigate("/play")
+        } else {
+            dispatch(updateGame(id))
+            navigate("/select")
+        }
+    }
+
     useEffect(() => {
         dispatch(clearGameSelection())
         updateUserInfo().then(() => {})
@@ -74,45 +88,24 @@ export default function Home() {
 
     return (
         <AppContainer>
-            {/* Header Container */}
-            <div className={"mb-2 flex flex-row justify-between items-end"}>
-                <p className={"text-4xl text-accent"}>Select a Game!</p>
-                {!loggedIn && (
-                    <ButtonWrapper onClick={() => navigate("/signUp")} className={"w-1/4"}>
-                        Sign Up
-                    </ButtonWrapper>
-                )}
-                {loggedIn && <UserMenu username={user.username} />}
-            </div>
-            <Divider color={"white"} />
             {/* Body Container */}
-            <div className={"flex flex-col items-center overflow-scroll mt-4"}>
-                {user.games &&
-                    user.games.map((game: DisplayGame, index: number) => (
-                        <Card
-                            name={game.name}
-                            playerNames={game.players}
-                            percentage={game.percentage}
-                            owner={game.owner}
-                            isOwner={game.owner === user.username}
-                            onClick={() => {
-                                if (!game.owner)
-                                    supabase
-                                        .from(dbTables.games)
-                                        .update({ owner: user.id })
-                                        .eq("id", game.id)
-                                        .then(() => {})
-                                if (levelGameId) {
-                                    navigate("/play")
-                                } else {
-                                    dispatch(updateGame(game.id))
-                                    navigate("/select")
-                                }
-                            }}
-                            id={game.id}
-                            key={index}
-                        />
-                    ))}
+            <div className={"w-full flex flex-col items-center overflow-scroll mt-4 pl-5 pr-5"}>
+                <GameSectionHeader />
+                <div className={"w-full pl-2 pr-2 mt-8"}>
+                    {user.games &&
+                        user.games.map((game: DisplayGame, index: number) => (
+                            <Card
+                                name={game.name}
+                                playerNames={game.players}
+                                percentage={game.percentage}
+                                owner={game.owner}
+                                isOwner={game.owner === user.username}
+                                onClick={() => handleCardClick(game.owner, game.id)}
+                                id={game.id}
+                                key={index}
+                            />
+                        ))}
+                </div>
                 <AddButton />
             </div>
         </AppContainer>
