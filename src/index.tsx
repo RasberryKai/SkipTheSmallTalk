@@ -16,6 +16,7 @@ import { PersistGate } from "redux-persist/integration/react"
 import Play from "./pages/Play"
 import PasswordReset from "./pages/PasswordReset"
 import Error404 from "./pages/Error404"
+import Username from "./pages/Username"
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
     {
         path: "/resetPassword",
         element: <PasswordReset />,
+    },
+    {
+        path: "/username",
+        element: <Username />,
     },
     {
         path: "*",

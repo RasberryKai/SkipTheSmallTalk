@@ -10,7 +10,7 @@ import AddButton from "../components/home/AddButton"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
 import { clearGame } from "../store/gameSlice"
-import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
+import { getCurrentEmail, getCurrentUserId, getCurrentUsername, isGoogleUser } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AppContainer from "../components/common/AppContainer"
 import { getGamesFromDBAsDisplayGames } from "../api/games"
@@ -28,6 +28,11 @@ export default function Home() {
         const email = await getCurrentEmail()
         const username = await getCurrentUsername()
         const userId = await getCurrentUserId()
+        // input username
+        if ((await isGoogleUser()) && !username) {
+            navigate("/username")
+            return
+        }
         // was logged in, but logged out without pressing log out button
         if (loggedIn && (!email || !username || !userId)) {
             dispatch(logOut())

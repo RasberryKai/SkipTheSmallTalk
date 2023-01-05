@@ -11,6 +11,8 @@ import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
 import { Link } from "react-router-dom"
 import AppContainer from "../components/common/AppContainer"
+import GoogleButton from "react-google-button"
+import { googleSignIn } from "../api/auth"
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -25,6 +27,7 @@ export default function SignUp() {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
             username: (value) => {
                 if (value.length < 3) return "Username must be at least 3 characters"
+                if (value.length > 20) return "Username must be at most 20 characters"
                 return null
             },
             password: (value) => (value.length > 0 ? null : "Password is required"),
@@ -78,10 +81,19 @@ export default function SignUp() {
         form.setValues({ email: "", username: "", password: "" })
     }
 
+    const googleLogIn = async () => {
+        const error = await googleSignIn()
+        if (error) {
+            setErrorMessage(error.message)
+            setIsLoading(false)
+            return
+        }
+    }
+
     return (
         <AppContainer>
             <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-                <AuthHeader>Sign Up</AuthHeader>
+                <AuthHeader className={"mb-6"}>Sign Up</AuthHeader>
                 <TextInput
                     label={"Email"}
                     placeholder={"john.doe@gmail.com"}
@@ -112,10 +124,11 @@ export default function SignUp() {
                     loading={isLoading}
                     variant={"actionable"}
                     type={"submit"}
-                    className={"w-1/2"}
+                    className={"w-[240px] h-[50px]"}
                 >
                     Sign Up
                 </ButtonWrapper>
+                <GoogleButton className={"mt-6"} type={"dark"} onClick={googleLogIn} />
                 {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
                 <p className={"mt-4"}>
                     Already have an account?{" "}

@@ -12,6 +12,8 @@ import AuthContainer from "../components/authentication/AuthContainer"
 import AuthHeader from "../components/authentication/AuthHeader"
 import { showNotification } from "@mantine/notifications"
 import AppContainer from "../components/common/AppContainer"
+import GoogleButton from "react-google-button"
+import { googleSignIn } from "../api/auth"
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -86,10 +88,19 @@ export default function SignIn() {
         })
     }
 
+    const googleLogIn = async () => {
+        const error = await googleSignIn()
+        if (error) {
+            setErrorMessage(error.message)
+            setIsLoading(false)
+            return
+        }
+    }
+
     return (
         <AppContainer>
             <AuthContainer onSubmit={form.onSubmit(onSubmit)}>
-                <AuthHeader>Sign In</AuthHeader>
+                <AuthHeader className={"mb-6"}>Sign In</AuthHeader>
                 <TextInput
                     label={"Email"}
                     placeholder={"name@gmail.com"}
@@ -111,9 +122,16 @@ export default function SignIn() {
                         </span>
                     </p>
                 </div>
-                <ButtonWrapper loading={isLoading} onClick={onSubmit} type={"submit"} variant={"actionable"} className={"w-1/2"}>
+                <ButtonWrapper
+                    loading={isLoading}
+                    onClick={onSubmit}
+                    type={"submit"}
+                    variant={"actionable"}
+                    className={"w-[240px] h-[50px]"}
+                >
                     Login
                 </ButtonWrapper>
+                <GoogleButton className={"mt-6"} type={"dark"} onClick={googleLogIn} />
                 {errorMessage && <p className={"text-base text-red-500 mt-2"}>{errorMessage}</p>}
                 <p className={errorMessage ? "mt-12" : "mt-20"}>
                     Don't have an account?{" "}

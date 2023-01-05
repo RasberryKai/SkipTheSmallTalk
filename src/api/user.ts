@@ -32,3 +32,14 @@ export async function getCurrentUserId() {
     if (data && data.length > 0) return data[0].id
     return null
 }
+
+export async function isGoogleUser() {
+    const session = await supabase.auth.getSession()
+    return session.data.session?.user.app_metadata.provider?.includes("google")
+}
+
+export async function addUser(email: string, username: string) {
+    const { data, error } = await supabase.from("profiles").insert({ email, username }).select()
+    if (error) return false
+    return data?.length != 0
+}
