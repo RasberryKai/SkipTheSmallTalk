@@ -2,7 +2,8 @@ import { Menu } from "@mantine/core"
 import { IconLogout } from "@tabler/icons"
 import { useDispatch } from "react-redux"
 import { logOut } from "../../store/userSlice"
-import { useNavigate } from "react-router"
+import { clearGame } from "../../store/gameSlice"
+import { clearGameSelection } from "../../store/gameSelectionSlice"
 
 interface UserMenu {
     username: string | null | undefined
@@ -10,7 +11,6 @@ interface UserMenu {
 
 export default function UserMenu(props: UserMenu) {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     return (
         <Menu shadow={"md"} withArrow={true}>
@@ -24,7 +24,8 @@ export default function UserMenu(props: UserMenu) {
                     icon={<IconLogout size={14} />}
                     onClick={() => {
                         dispatch(logOut())
-                        navigate("/signIn")
+                        dispatch(clearGame())
+                        dispatch(clearGameSelection())
                     }}
                 >
                     Logout
