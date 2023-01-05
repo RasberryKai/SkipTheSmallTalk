@@ -22,7 +22,7 @@ export default function Home() {
     const levelGameId = useSelector((state: RootState) => state.game.levelGameId)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    useMantineTheme().colorScheme = "light"
+    useMantineTheme().colorScheme = "dark"
 
     const updateUserInfo = async () => {
         const email = await getCurrentEmail()
@@ -67,8 +67,8 @@ export default function Home() {
             <div className={"mb-2 flex flex-row justify-between items-end"}>
                 <p className={"text-4xl text-accent"}>Select a Game!</p>
                 {!loggedIn && (
-                    <ButtonWrapper onClick={() => navigate("/signIn")} className={"w-1/4"}>
-                        Login
+                    <ButtonWrapper onClick={() => navigate("/signUp")} className={"w-1/4"}>
+                        Sign Up
                     </ButtonWrapper>
                 )}
                 {loggedIn && <UserMenu username={user.username} />}
