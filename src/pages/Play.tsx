@@ -22,7 +22,7 @@ export default function Play() {
                         className={"text-xl text-white flex flex-row items-center"}
                     >
                         <IconArrowBack />
-                        <p className={"ml-2"}>Back</p>
+                        <p className={"ml-2 select-none"}>Back</p>
                     </Link>
                 </div>
                 <div className={"w-full h-full flex flex-col justify-center items-center pb-52"}>

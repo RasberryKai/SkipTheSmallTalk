@@ -1,11 +1,10 @@
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons"
 import { nextCard, previousCard } from "../../store/gameSlice"
 import ActionBar from "./ActionBar"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../types"
-import RoundIconButton from "./RoundIconButton"
 import { supabase } from "../../lib/Supabase"
 import { dbTables } from "../../constants/keys"
+import ChevronButton from "./ChevronButton"
 
 export default function ControlBar() {
     const dispatch = useDispatch()
@@ -17,15 +16,15 @@ export default function ControlBar() {
 
     return (
         <div className={"flex flex-row w-full justify-between items-center w-[90%]"}>
-            <RoundIconButton
+            <ChevronButton
+                direction={"left"}
                 onClick={() => {
                     if (cardsDone.length > 0) dispatch(previousCard())
                 }}
-            >
-                <IconChevronLeft size={45} color={"#464545"} className={"mr-2"} />
-            </RoundIconButton>
+            />
             <ActionBar />
-            <RoundIconButton
+            <ChevronButton
+                direction={"right"}
                 onClick={() => {
                     if (cardsLeft.length === 1 && loggedIn)
                         supabase
@@ -35,9 +34,7 @@ export default function ControlBar() {
                             .then(() => {})
                     if (cardsLeft.length > 0) dispatch(nextCard())
                 }}
-            >
-                <IconChevronRight size={45} color={"#464545"} className={"ml-2"} />
-            </RoundIconButton>
+            />
         </div>
     )
 }

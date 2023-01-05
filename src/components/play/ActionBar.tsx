@@ -17,32 +17,30 @@ export default function ActionBar() {
 
     return (
         <div className={"flex flex-col text-white mt-4"}>
-            <p className={"font-bold mb-2"}>
+            <p className={"font-bold mb-2 select-none"}>
                 LEVEL {levelNumber} - {1 + cardsDone.length} / {1 + cardsDone.length + cardsLeft.length}
             </p>
             <div className={"flex flex-row justify-center"}>
                 <Tooltip label={"Home"}>
                     <div>
-                        <IconHome size={size} onClick={() => navigate("/")} />
+                        <IconHome size={size} onClick={() => navigate("/")} className={"hover:cursor-pointer "} />
                     </div>
                 </Tooltip>
                 <Popover opened={opened} withArrow>
                     <Popover.Target>
-                        <Tooltip label={"Copy"}>
-                            <div className={"ml-6"}>
-                                <IconClipboard
-                                    size={size}
-                                    onClick={() => {
-                                        if (!currentCard) return
-                                        navigator.clipboard.writeText(currentCard)
-                                        setOpened(true)
-                                        setTimeout(() => {
-                                            setOpened(false)
-                                        }, 1000)
-                                    }}
-                                />
-                            </div>
-                        </Tooltip>
+                        <div className={"ml-6 hover:cursor-pointer"}>
+                            <IconClipboard
+                                size={size}
+                                onClick={() => {
+                                    if (!currentCard) return
+                                    navigator.clipboard.writeText(currentCard)
+                                    setOpened(true)
+                                    setTimeout(() => {
+                                        setOpened(false)
+                                    }, 1000)
+                                }}
+                            />
+                        </div>
                     </Popover.Target>
 
                     <Popover.Dropdown>
