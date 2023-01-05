@@ -36,9 +36,10 @@ export default function Home() {
                     username: username,
                 })
             )
-        else {
-            await dispatch(logOut())
-            await dispatch(clearGame())
+        if (loggedIn) {
+            dispatch(logOut())
+            dispatch(clearGame())
+            dispatch(clearGameSelection())
         }
     }
 

@@ -22,6 +22,15 @@ export async function deleteGame(id: string): Promise<string | null> {
     return null
 }
 
+export async function createGame(gameName: string, ownerId: string) {
+    const { data, error } = await supabase.from(dbTables.games).insert([{ name: gameName, owner: ownerId }])
+    if (error) {
+        console.log(error)
+        return null
+    }
+    return data[0]
+}
+
 // TODO: Return all info instead of DisplayGame
 export async function getGamesFromDB(userId: string) {
     const playerGamesJoinResponse = await supabase.from(dbTables.playerGamesJoin).select("*").eq("player", userId)

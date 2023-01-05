@@ -1,15 +1,17 @@
 import { TextInput } from "@mantine/core"
 import React, { useState } from "react"
-import { supabase } from "../../lib/Supabase"
-import { dbTables } from "../../constants/keys"
 import { showNotification } from "@mantine/notifications"
 import ButtonWrapper from "../common/ButtonWrapper"
 import { useDispatch, useSelector } from "react-redux"
 import { updateGameCreationId, updateGameCreationName } from "../../store/gameCreationSlice"
 import { RootState } from "../../types"
+import { createGame } from "../../api/games"
+import { updateGames } from "../../store/userSlice"
+import { useNavigate } from "react-router"
 
 export default function GameNamePage() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const userId = useSelector((state: RootState) => state.user.id)
     const existingGameName = useSelector((state: RootState) => state.gameCreation.gameName)
@@ -27,23 +29,30 @@ export default function GameNamePage() {
     const handleCreate = async () => {
         const canProceed = validate()
         if (!canProceed) return
-        const { data, error } = await supabase
-            .from(dbTables.games)
-            .insert({
-                name: gameName,
-                owner: userId,
-            })
-            .select()
-        if (error) {
-            console.log("Inserting Game Error: " + error.message)
+        if (!userId) {
+            dispatch(
+                updateGames([
+                    {
+                        id: "temp",
+                        name: gameName,
+                        owner: "You",
+                        players: [],
+                        percentage: 10,
+                    },
+                ])
+            )
+            navigate("/")
+            return
+        }
+        const created: any = await createGame(gameName, userId)
+        if (!created) {
             showNotification({
                 title: "Failed to Create Game",
-                message: error.message,
+                message: "Try again in a few minutes",
                 color: "red",
             })
             return
         }
-        const created = data[0]
         if (!created.id || !created.name) {
             showNotification({
                 title: "Failed to Create Game",

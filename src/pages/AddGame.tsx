@@ -1,10 +1,8 @@
-import React from "react"
 import Header from "../components/common/Header"
 import { useMantineTheme } from "@mantine/core"
 import { RootState } from "../types"
 import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
-import useNeedsToBeLoggedIn from "../hooks/useNeedsToBeLoggedIn"
 import AddPlayersGamePage from "../components/addGame/AddPlayersGamePage"
 import GameNamePage from "../components/addGame/GameNamePage"
 import { updateGameCreationId, updateGameCreationName } from "../store/gameCreationSlice"
@@ -12,7 +10,6 @@ import { supabase } from "../lib/Supabase"
 import AppContainer from "../components/common/AppContainer"
 
 export default function AddGame() {
-    useNeedsToBeLoggedIn()
     const theme = useMantineTheme()
     theme.colorScheme = "light"
 
