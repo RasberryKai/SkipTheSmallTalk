@@ -46,11 +46,8 @@ export default function Home() {
     }
 
     useEffect(() => {
+        dispatch(clearGameSelection())
         updateUserInfo().then(() => {
-            if (loggedIn) {
-                dispatch(clearGameSelection())
-                dispatch(clearGame())
-            }
             if (loggedIn && user.id) {
                 // load games, if user logged in successfully
                 getGamesFromDBAsDisplayGames(user.id).then((games) => {

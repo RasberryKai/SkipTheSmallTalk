@@ -1,9 +1,13 @@
 import { supabase } from "../lib/Supabase"
 
-export async function getCards(level: string): Promise<any[] | null> {
-    const { data, error } = await supabase.from("cards").select("*").eq("level", level)
+export async function getCards(levelId: string): Promise<any[] | null> {
+    const { data, error } = await supabase
+        .from("cards")
+        .select("*")
+        .eq("level", levelId)
+        .order("order_number", { ascending: true })
     if (error) {
-        console.log(`Error getting cards for level ${level}: ${error}`)
+        console.log(`Error getting cards for level ${levelId}: ${error}`)
         return null
     }
     return data

@@ -3,12 +3,12 @@ import { CardState, wildcard } from "../types"
 import { getCompleteCards, resplitCards } from "../functions/cardCalculations"
 
 export interface GameState {
-    level: number | null // yes
-    levelGameId: wildcard // yes
-    currentCard: wildcard // yes
-    cardsDone: any[] // yes
-    cardsLeft: any[] // yes
-    cardIds: any[] // yes
+    level: number | null
+    levelGameId: wildcard
+    currentCard: wildcard
+    cardsDone: any[]
+    cardsLeft: any[]
+    cardIds: any[]
 }
 
 const initialState: GameState = {

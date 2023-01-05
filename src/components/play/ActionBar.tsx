@@ -1,13 +1,11 @@
 import { IconClipboard, IconHome } from "@tabler/icons"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Popover, Tooltip } from "@mantine/core"
 import { useState } from "react"
-import { clearGame } from "../../store/gameSlice"
 import { useNavigate } from "react-router"
 import { RootState } from "../../types"
 
 export default function ActionBar() {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const currentCard = useSelector((state: RootState) => state.game.currentCard)
     const levelNumber = useSelector((state: RootState) => state.game.level)
@@ -25,13 +23,7 @@ export default function ActionBar() {
             <div className={"flex flex-row justify-center"}>
                 <Tooltip label={"Home"}>
                     <div>
-                        <IconHome
-                            size={size}
-                            onClick={() => {
-                                dispatch(clearGame())
-                                navigate("/")
-                            }}
-                        />
+                        <IconHome size={size} onClick={() => navigate("/")} />
                     </div>
                 </Tooltip>
                 <Popover opened={opened} withArrow>

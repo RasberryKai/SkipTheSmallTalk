@@ -5,7 +5,7 @@ import { supabase } from "../lib/Supabase"
 import SelectionCard from "../components/selection/SelectionCard"
 import { RootState, SelectionCardInfo } from "../types"
 import { showNotification } from "@mantine/notifications"
-import { cardObjectsToStrings, getSplitCards, sortCards } from "../functions/cardCalculations"
+import { cardObjectsToStrings, getSplitCards } from "../functions/cardCalculations"
 import { getCard, getCards } from "../api/cards"
 import { dbTables } from "../constants/keys"
 import SelectionHeader from "../components/selection/SelectionHeader"
@@ -16,10 +16,12 @@ import { updateCardIds, updateCardState, updateLevelGame, updateLevelNumber } fr
 export default function Selection() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
     const gameId = useSelector((state: RootState) => state.gameSelection.gameId)
     const deckId = useSelector((state: RootState) => state.gameSelection.deckId)
     const levelId = useSelector((state: RootState) => state.gameSelection.levelId)
     const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
+
     const [displayedItems, setDisplayedItems] = useState<SelectionCardInfo[]>([])
 
     const renderDecks = async () => {
@@ -61,6 +63,31 @@ export default function Selection() {
     }
 
     const initialiseGame = async () => {
+        if (!levelId) {
+            showNotification({
+                title: "Error",
+                message: "No level selected, please select a level",
+                color: "red",
+            })
+            return
+        }
+        // no user mode dispatch cards for this level
+        if (!loggedIn) {
+            let cards = await getCards(levelId)
+            if (!cards) {
+                showNotification({
+                    title: "Error",
+                    message: "No cards found for this level",
+                    color: "red",
+                })
+                return
+            }
+            cards = cards.map((card) => card.question)
+            const { cardsDone, cardsLeft } = getSplitCards(cards, null)
+            dispatch(updateCardState({ selectedCard: cardsLeft.shift(), cardsDone, cardsLeft }))
+            navigate("/play")
+            return
+        }
         const { data, error } = await supabase
             .from(dbTables.levelGames)
             .select("*")
@@ -84,7 +111,7 @@ export default function Selection() {
             })
             return
         }
-        let cards = sortCards(await getCards(levelId))
+        let cards = await getCards(levelId)
         if (!cards) {
             showNotification({
                 title: "Error",
@@ -142,10 +169,6 @@ export default function Selection() {
             if (gameId && deckId && levelId) await initialiseGame()
         })()
     }, [gameId, deckId, levelId])
-
-    useEffect(() => {
-        if (!loggedIn) navigate("/signIn")
-    }, [])
 
     const dispatchSelected = (id: string, levelNumber: number | null) => {
         // dispatch new deck
