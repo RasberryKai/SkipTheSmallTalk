@@ -12,7 +12,7 @@ export default function Options(props: { id: string; isOwner: boolean }) {
         <div className={"text-black mt-0.5"}>
             <Menu withArrow={true}>
                 <Menu.Target>
-                    <div>
+                    <div className={"hover:cursor-pointer"}>
                         <IconTool stroke={1.5} />
                     </div>
                 </Menu.Target>

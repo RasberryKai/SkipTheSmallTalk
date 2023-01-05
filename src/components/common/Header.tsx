@@ -17,7 +17,7 @@ export default function Header(props: HeaderProps) {
             <div className={"flex flex-row items-center"}>
                 <IconArrowBack
                     color={"white"}
-                    className={"mr-2"}
+                    className={"mr-2 hover:cursor-pointer"}
                     onClick={() => {
                         if (props.onClick) props.onClick()
                         else navigate(-1)

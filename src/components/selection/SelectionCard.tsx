@@ -7,7 +7,9 @@ interface SelectionCardProps {
 export default function SelectionCard(props: SelectionCardProps) {
     return (
         <div
-            className={"w-full h-44 bg-accent rounded-xl flex flex-col items-center justify-start p-2 mb-4 select-none"}
+            className={
+                "w-full h-44 bg-accent rounded-xl flex flex-col items-center justify-start p-2 mb-4 select-none hover:cursor-pointer"
+            }
             onClick={props.onClick}
         >
             <p className={"text-2xl text-black font-bold text-center"}>{props.name}</p>

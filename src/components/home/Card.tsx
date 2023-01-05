@@ -15,7 +15,10 @@ export default function Card(props: CardProps) {
         <div className={"w-full h-44 bg-accent rounded-xl flex flex-col items-start justify-between p-2 mb-4 select-none"}>
             <div className={"w-full flex flex-row justify-between h-full"}>
                 {/* Name and shared container */}
-                <div className={"ml-2 flex-col justify-start items-start w-full h-full"} onClick={props.onClick}>
+                <div
+                    className={"ml-2 flex-col justify-start items-start w-full h-full hover:cursor-pointer"}
+                    onClick={props.onClick}
+                >
                     <p className={"text-black text-2xl flex items-start justify-start mb-2"}>{props.name}</p>
                     {props.owner && <p className={"text-black text-lg flex items-start justify-start"}>Owner: {props.owner}</p>}
                     {props.playerNames && props.playerNames.length > 0 && (

@@ -15,7 +15,7 @@ export default function UserMenu(props: UserMenu) {
     return (
         <Menu shadow={"md"} withArrow={true}>
             <Menu.Target>
-                <p className={"text-white text-xl underline underline-offset-2"}>{props.username}</p>
+                <p className={"text-white text-xl underline underline-offset-2 hover:cursor-pointer"}>{props.username}</p>
             </Menu.Target>
 
             <Menu.Dropdown>
