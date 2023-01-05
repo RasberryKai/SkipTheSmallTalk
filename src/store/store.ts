@@ -5,10 +5,12 @@ import GameSlice from "./gameSlice"
 import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist"
 import GameCreationSlice from "./gameCreationSlice"
+import GameSelectionSlice from "./gameSelectionSlice"
 
 const reducers = combineReducers({
     user: UserSlice,
     game: GameSlice,
+    gameSelection: GameSelectionSlice,
     gameCreation: GameCreationSlice,
 })
 

@@ -1,9 +1,15 @@
 import { GameState } from "./store/gameSlice"
 import { UserState } from "./store/userSlice"
 import { GameCreationState } from "./store/gameCreationSlice"
+import { GameSelectionState } from "./store/gameSelectionSlice"
 
 // Redux
-export type RootState = { game: GameState; user: UserState; gameCreation: GameCreationState }
+export type RootState = {
+    game: GameState
+    user: UserState
+    gameSelection: GameSelectionState
+    gameCreation: GameCreationState
+}
 
 export type UserUpdate = {
     id: string

@@ -3,21 +3,15 @@ import { CardState, wildcard } from "../types"
 import { getCompleteCards, resplitCards } from "../functions/cardCalculations"
 
 export interface GameState {
-    gameId: string | null | undefined
-    deckId: string | null | undefined
-    levelId: string | null | undefined
-    level: number | null | undefined
-    levelGameId: string | null | undefined
-    currentCard: string | null | undefined
-    cardsDone: any[]
-    cardsLeft: any[]
-    cardIds: any[]
+    level: number | null // yes
+    levelGameId: wildcard // yes
+    currentCard: wildcard // yes
+    cardsDone: any[] // yes
+    cardsLeft: any[] // yes
+    cardIds: any[] // yes
 }
 
 const initialState: GameState = {
-    gameId: null,
-    deckId: null,
-    levelId: null,
     level: null,
     currentCard: null,
     levelGameId: null,
@@ -30,15 +24,6 @@ export const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        selectGame(state, action: PayloadAction<wildcard>) {
-            state.gameId = action.payload
-        },
-        selectDeck(state, action: PayloadAction<wildcard>) {
-            state.deckId = action.payload
-        },
-        selectLevel(state, action: PayloadAction<wildcard>) {
-            state.levelId = action.payload
-        },
         selectLevelNumber(state, action: PayloadAction<number | null>) {
             state.level = action.payload
         },
@@ -71,9 +56,6 @@ export const gameSlice = createSlice({
             state.cardsLeft = cardsLeft
         },
         clearGame(state) {
-            state.gameId = null
-            state.deckId = null
-            state.levelId = null
             state.levelGameId = null
             state.currentCard = null
             state.cardsDone = []
@@ -83,18 +65,7 @@ export const gameSlice = createSlice({
     },
 })
 
-export const {
-    selectGame,
-    selectDeck,
-    selectLevel,
-    selectLevelNumber,
-    selectLevelGame,
-    setCardState,
-    setCardIds,
-    nextCard,
-    previousCard,
-    jumpToCard,
-    clearGame,
-} = gameSlice.actions
+export const { selectLevelNumber, selectLevelGame, setCardState, setCardIds, nextCard, previousCard, jumpToCard, clearGame } =
+    gameSlice.actions
 
 export default gameSlice.reducer
