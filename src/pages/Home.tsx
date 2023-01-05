@@ -50,21 +50,27 @@ export default function Home() {
             )
     }
 
+    const loadMainPage = () => {
+        if (loggedIn) {
+            dispatch(clearGame())
+            dispatch(clearGameSelection())
+        }
+        if (loggedIn && user.id) {
+            // load games, if user logged in successfully
+            getGamesFromDBAsDisplayGames(user.id).then((games) => {
+                if (games) dispatch(updateGames(games))
+            })
+        }
+    }
+
     useEffect(() => {
         dispatch(clearGameSelection())
-        updateUserInfo().then(() => {
-            if (loggedIn) {
-                dispatch(clearGame())
-                dispatch(clearGameSelection())
-            }
-            if (loggedIn && user.id) {
-                // load games, if user logged in successfully
-                getGamesFromDBAsDisplayGames(user.id).then((games) => {
-                    if (games) dispatch(updateGames(games))
-                })
-            }
-        })
+        updateUserInfo().then(() => {})
     }, [])
+
+    useEffect(() => {
+        loadMainPage()
+    }, [user.email])
 
     return (
         <AppContainer>
