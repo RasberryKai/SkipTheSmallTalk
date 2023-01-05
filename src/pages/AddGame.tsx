@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import useNeedsToBeLoggedIn from "../hooks/useNeedsToBeLoggedIn"
 import AddPlayersGamePage from "../components/addGame/AddPlayersGamePage"
 import GameNamePage from "../components/addGame/GameNamePage"
-import { selectGameCreationId, selectGameCreationName } from "../store/gameCreationSlice"
+import { updateGameCreationId, updateGameCreationName } from "../store/gameCreationSlice"
 import { supabase } from "../lib/Supabase"
 import AppContainer from "../components/common/AppContainer"
 
@@ -21,10 +21,10 @@ export default function AddGame() {
     const gameId = useSelector((state: RootState) => state.gameCreation.gameId)
     const handleBack = () => {
         if (gameId) {
-            dispatch(selectGameCreationId(""))
+            dispatch(updateGameCreationId(""))
             supabase.from("games").delete().eq("id", gameId).then()
         } else {
-            dispatch(selectGameCreationName(""))
+            dispatch(updateGameCreationName(""))
             navigate(-1)
         }
     }

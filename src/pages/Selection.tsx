@@ -1,24 +1,25 @@
 import { useNavigate } from "react-router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { selectDeck, selectLevel, selectLevelGame, selectLevelNumber, setCardIds, setCardState } from "../store/gameSlice"
 import { supabase } from "../lib/Supabase"
 import SelectionCard from "../components/selection/SelectionCard"
-import { SelectionCardInfo } from "../types"
+import { RootState, SelectionCardInfo } from "../types"
 import { showNotification } from "@mantine/notifications"
 import { cardObjectsToStrings, getSplitCards, sortCards } from "../functions/cardCalculations"
 import { getCard, getCards } from "../api/cards"
 import { dbTables } from "../constants/keys"
 import SelectionHeader from "../components/selection/SelectionHeader"
 import AppContainer from "../components/common/AppContainer"
+import { updateDeck, updateLevel } from "../store/gameSelectionSlice"
+import { updateCardIds, updateCardState, updateLevelGame, updateLevelNumber } from "../store/gameSlice"
 
 export default function Selection() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const game = useSelector((state: any) => state.game.gameId)
-    const deck = useSelector((state: any) => state.game.deckId)
-    const level = useSelector((state: any) => state.game.levelId)
-    const loggedIn = useSelector((state: any) => state.user.loggedIn)
+    const gameId = useSelector((state: RootState) => state.gameSelection.gameId)
+    const deckId = useSelector((state: RootState) => state.gameSelection.deckId)
+    const levelId = useSelector((state: RootState) => state.gameSelection.levelId)
+    const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
     const [displayedItems, setDisplayedItems] = useState<SelectionCardInfo[]>([])
 
     const renderDecks = async () => {
@@ -42,7 +43,7 @@ export default function Selection() {
         const { data, error } = await supabase
             .from(dbTables.levels)
             .select("*")
-            .eq("deck", deck)
+            .eq("deck", deckId)
             .order("level_number", { ascending: true })
         if (error) {
             console.log("Error while getting games: ", error)
@@ -63,9 +64,9 @@ export default function Selection() {
         const { data, error } = await supabase
             .from(dbTables.levelGames)
             .select("*")
-            .eq("game", game)
-            .eq("deck", deck)
-            .eq("level", level)
+            .eq("game", gameId)
+            .eq("deck", deckId)
+            .eq("level", levelId)
         if (error) {
             console.log(`Error while checking for existing levelGame: ${error}`)
             showNotification({
@@ -75,7 +76,15 @@ export default function Selection() {
             })
             return
         }
-        let cards = sortCards(await getCards(level))
+        if (!levelId) {
+            showNotification({
+                title: "Error",
+                message: "No level selected",
+                color: "red",
+            })
+            return
+        }
+        let cards = sortCards(await getCards(levelId))
         if (!cards) {
             showNotification({
                 title: "Error",
@@ -84,16 +93,16 @@ export default function Selection() {
             })
             return
         }
-        dispatch(setCardIds(cards.map((card) => card.id)))
+        dispatch(updateCardIds(cards.map((card) => card.id)))
         cards = cardObjectsToStrings(cards)
         if (data && data.length > 0) {
-            await dispatch(selectLevelGame(data[0].id))
+            await dispatch(updateLevelGame(data[0].id))
             const selectedCardId = data[0].selected_card
             let selectedCard = await getCard(selectedCardId)
             if (selectedCard) selectedCard = selectedCard.question
             const { cardsDone, cardsLeft } = getSplitCards(cards, selectedCard)
             if (!selectedCard) selectedCard = cardsLeft.shift()
-            await dispatch(setCardState({ selectedCard, cardsDone, cardsLeft }))
+            await dispatch(updateCardState({ selectedCard, cardsDone, cardsLeft }))
             navigate(`/play`)
             return
         }
@@ -102,9 +111,9 @@ export default function Selection() {
             .from(dbTables.levelGames)
             .insert([
                 {
-                    deck: deck,
-                    level: level,
-                    game: game,
+                    deck: deckId,
+                    level: levelId,
+                    game: gameId,
                     selected_card: null,
                     finished: false,
                 },
@@ -119,20 +128,20 @@ export default function Selection() {
             })
             return
         }
-        await dispatch(selectLevelGame(response.data[0].id))
+        await dispatch(updateLevelGame(response.data[0].id))
         const { cardsDone, cardsLeft } = getSplitCards(cards, null)
-        await dispatch(setCardState({ selectedCard: cardsLeft.shift(), cardsDone, cardsLeft }))
+        await dispatch(updateCardState({ selectedCard: cardsLeft.shift(), cardsDone, cardsLeft }))
         navigate(`/play`)
     }
 
     useEffect(() => {
         // Render Decks
         ;(async () => {
-            if (game && !deck && !level) await renderDecks()
-            if (game && deck && !level) await renderLevels()
-            if (game && deck && level) await initialiseGame()
+            if (gameId && !deckId && !levelId) await renderDecks()
+            if (gameId && deckId && !levelId) await renderLevels()
+            if (gameId && deckId && levelId) await initialiseGame()
         })()
-    }, [game, deck, level])
+    }, [gameId, deckId, levelId])
 
     useEffect(() => {
         if (!loggedIn) navigate("/signIn")
@@ -140,18 +149,18 @@ export default function Selection() {
 
     const dispatchSelected = (id: string, levelNumber: number | null) => {
         // dispatch new deck
-        if (!deck) dispatch(selectDeck(id))
+        if (!deckId) dispatch(updateDeck(id))
         // dispatch new level
-        else if (!level) {
-            dispatch(selectLevel(id))
-            if (levelNumber) dispatch(selectLevelNumber(levelNumber))
+        else if (!levelId) {
+            dispatch(updateLevel(id))
+            if (levelNumber) dispatch(updateLevelNumber(levelNumber))
         }
     }
 
     const goBack = () => {
-        if (!deck) navigate("/")
-        else if (!level) dispatch(selectDeck(null))
-        else dispatch(selectLevel(null))
+        if (!deckId) navigate("/")
+        else if (!levelId) dispatch(updateDeck(null))
+        else dispatch(updateLevel(null))
     }
 
     return (

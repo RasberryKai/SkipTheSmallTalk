@@ -24,18 +24,18 @@ export const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
-        selectLevelNumber(state, action: PayloadAction<number | null>) {
+        updateLevelNumber(state, action: PayloadAction<number | null>) {
             state.level = action.payload
         },
-        selectLevelGame(state, action: PayloadAction<wildcard>) {
+        updateLevelGame(state, action: PayloadAction<wildcard>) {
             state.levelGameId = action.payload
         },
-        setCardState(state, action: PayloadAction<CardState>) {
+        updateCardState(state, action: PayloadAction<CardState>) {
             state.currentCard = action.payload.selectedCard
             state.cardsDone = action.payload.cardsDone
             state.cardsLeft = action.payload.cardsLeft
         },
-        setCardIds(state, action: PayloadAction<any[]>) {
+        updateCardIds(state, action: PayloadAction<any[]>) {
             state.cardIds = action.payload
         },
         nextCard(state) {
@@ -65,7 +65,15 @@ export const gameSlice = createSlice({
     },
 })
 
-export const { selectLevelNumber, selectLevelGame, setCardState, setCardIds, nextCard, previousCard, jumpToCard, clearGame } =
-    gameSlice.actions
+export const {
+    nextCard,
+    previousCard,
+    jumpToCard,
+    updateCardState,
+    updateCardIds,
+    updateLevelNumber,
+    updateLevelGame,
+    clearGame,
+} = gameSlice.actions
 
 export default gameSlice.reducer

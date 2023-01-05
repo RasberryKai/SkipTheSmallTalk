@@ -5,15 +5,16 @@ import Card from "../components/home/Card"
 import { DisplayGame, RootState } from "../types"
 import { useEffect } from "react"
 import { supabase } from "../lib/Supabase"
-import { logIn, logOut, setGames, UserState } from "../store/userSlice"
+import { logIn, logOut, updateGames, UserState } from "../store/userSlice"
 import AddButton from "../components/home/AddButton"
 import ButtonWrapper from "../components/common/ButtonWrapper"
 import UserMenu from "../components/home/UserMenu"
-import { clearGame, selectGame } from "../store/gameSlice"
+import { clearGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername } from "../api/user"
 import { dbTables } from "../constants/keys"
 import AppContainer from "../components/common/AppContainer"
 import { getGamesFromDB } from "../api/games"
+import { clearGameSelection, updateGame } from "../store/gameSelectionSlice"
 
 export default function Home() {
     const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
@@ -42,21 +43,19 @@ export default function Home() {
     }
 
     useEffect(() => {
-        updateUserInfo().then(() => {})
-        // clear game state when users logged in (all saved in DB anyway)
-        if (loggedIn) dispatch(clearGame())
-    }, [])
-
-    useEffect(() => {
-        // Load games from DB, when user's logged in / if userId exists
-        // on user.email, because it runs on mount, and whenever the email is loaded (after login)
-        ;(async () => {
-            if (user.id) {
-                const games = await getGamesFromDB(user.id)
-                if (games) dispatch(setGames(games))
+        updateUserInfo().then(() => {
+            if (loggedIn) {
+                dispatch(clearGameSelection())
+                dispatch(clearGame())
             }
-        })()
-    }, [user.email])
+            if (loggedIn && user.id) {
+                // load games, if user logged in successfully
+                getGamesFromDB(user.id).then((games) => {
+                    if (games) dispatch(updateGames(games))
+                })
+            }
+        })
+    }, [])
 
     return (
         <AppContainer>
@@ -91,7 +90,7 @@ export default function Home() {
                                 if (levelGameId) {
                                     navigate("/play")
                                 } else {
-                                    dispatch(selectGame(game.id))
+                                    dispatch(updateGame(game.id))
                                     navigate("/select")
                                 }
                             }}

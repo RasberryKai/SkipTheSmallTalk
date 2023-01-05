@@ -15,14 +15,14 @@ export const gameCreationSlice = createSlice({
     name: "gameCreation",
     initialState,
     reducers: {
-        selectGameCreationId(state: GameCreationState, action: PayloadAction<wildcard>) {
+        updateGameCreationId(state: GameCreationState, action: PayloadAction<wildcard>) {
             state.gameId = action.payload
         },
-        selectGameCreationName(state: GameCreationState, action: PayloadAction<wildcard>) {
+        updateGameCreationName(state: GameCreationState, action: PayloadAction<wildcard>) {
             state.gameName = action.payload
         },
     },
 })
 
-export const { selectGameCreationId, selectGameCreationName } = gameCreationSlice.actions
+export const { updateGameCreationId, updateGameCreationName } = gameCreationSlice.actions
 export default gameCreationSlice.reducer

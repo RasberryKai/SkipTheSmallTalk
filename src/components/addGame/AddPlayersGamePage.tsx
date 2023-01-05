@@ -8,7 +8,7 @@ import { useNavigate } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../types"
 import RemovableUserItem from "./RemovableUserItem"
-import { selectGameCreationId, selectGameCreationName } from "../../store/gameCreationSlice"
+import { updateGameCreationId, updateGameCreationName } from "../../store/gameCreationSlice"
 
 export default function AddPlayersGamePage() {
     const navigate = useNavigate()
@@ -96,8 +96,8 @@ export default function AddPlayersGamePage() {
         }
         // go home
         navigate("/")
-        dispatch(selectGameCreationName(""))
-        dispatch(selectGameCreationId(""))
+        dispatch(updateGameCreationName(""))
+        dispatch(updateGameCreationId(""))
     }
 
     return (

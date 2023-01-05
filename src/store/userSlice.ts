@@ -28,7 +28,7 @@ const userSlice = createSlice({
             user.email = action.payload.email
             user.username = action.payload.username
         },
-        setGames(user, action: PayloadAction<DisplayGame[]>) {
+        updateGames(user, action: PayloadAction<DisplayGame[]>) {
             user.games = action.payload
         },
         updateUser(user, action: PayloadAction<UserUpdate>) {
@@ -47,6 +47,6 @@ const userSlice = createSlice({
     },
 })
 
-export const { logIn, logOut, setGames, updateUser } = userSlice.actions
+export const { logIn, logOut, updateGames, updateUser } = userSlice.actions
 
 export default userSlice.reducer

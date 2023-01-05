@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../types"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
-import { clearGame, selectDeck, selectGame } from "../store/gameSlice"
 import ControlBar from "../components/play/ControlBar"
 import AppContainer from "../components/common/AppContainer"
+import { updateLevel } from "../store/gameSelectionSlice"
 
 export default function Play() {
     // check redux store
@@ -18,8 +18,6 @@ export default function Play() {
     useMantineTheme().colorScheme = "dark"
 
     const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
-    const gameId = useSelector((state: RootState) => state.game.gameId)
-    const deckId = useSelector((state: RootState) => state.game.deckId)
 
     useEffect(() => {
         if (!loggedIn) navigate("/signIn")
@@ -32,13 +30,7 @@ export default function Play() {
                 <div className={"w-full flex flex-row justify-start"}>
                     <Link
                         to={"/select"}
-                        onClick={() => {
-                            const id = gameId
-                            const deck = deckId
-                            dispatch(clearGame())
-                            dispatch(selectGame(id))
-                            dispatch(selectDeck(deck))
-                        }}
+                        onClick={() => dispatch(updateLevel(null))}
                         className={"text-xl text-white flex flex-row items-center"}
                     >
                         <IconArrowBack />

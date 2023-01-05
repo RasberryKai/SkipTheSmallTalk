@@ -5,7 +5,7 @@ import { dbTables } from "../../constants/keys"
 import { showNotification } from "@mantine/notifications"
 import ButtonWrapper from "../common/ButtonWrapper"
 import { useDispatch, useSelector } from "react-redux"
-import { selectGameCreationId, selectGameCreationName } from "../../store/gameCreationSlice"
+import { updateGameCreationId, updateGameCreationName } from "../../store/gameCreationSlice"
 import { RootState } from "../../types"
 
 export default function GameNamePage() {
@@ -52,8 +52,8 @@ export default function GameNamePage() {
             })
             return
         }
-        dispatch(selectGameCreationId(created.id))
-        dispatch(selectGameCreationName(created.name))
+        dispatch(updateGameCreationId(created.id))
+        dispatch(updateGameCreationName(created.name))
     }
     return (
         <div className={"w-full pt-14"}>
