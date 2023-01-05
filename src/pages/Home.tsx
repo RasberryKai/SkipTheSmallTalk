@@ -28,6 +28,13 @@ export default function Home() {
         const email = await getCurrentEmail()
         const username = await getCurrentUsername()
         const userId = await getCurrentUserId()
+        // was logged in, but logged out without pressing log out button
+        if (loggedIn && (!email || !username || !userId)) {
+            dispatch(logOut())
+            dispatch(clearGame())
+            dispatch(clearGameSelection())
+        }
+        // logged in
         if (email && username && userId)
             await dispatch(
                 logIn({
@@ -36,11 +43,6 @@ export default function Home() {
                     username: username,
                 })
             )
-        if (loggedIn) {
-            dispatch(logOut())
-            dispatch(clearGame())
-            dispatch(clearGameSelection())
-        }
     }
 
     useEffect(() => {

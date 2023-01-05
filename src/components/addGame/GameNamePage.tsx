@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateGameCreationId, updateGameCreationName } from "../../store/gameCreationSlice"
 import { RootState } from "../../types"
 import { createGame } from "../../api/games"
-import { updateGames } from "../../store/userSlice"
+import { addGame } from "../../store/userSlice"
 import { useNavigate } from "react-router"
 
 export default function GameNamePage() {
@@ -31,16 +31,16 @@ export default function GameNamePage() {
         if (!canProceed) return
         if (!userId) {
             dispatch(
-                updateGames([
-                    {
-                        id: "temp",
-                        name: gameName,
-                        owner: "You",
-                        players: [],
-                        percentage: 10,
-                    },
-                ])
+                addGame({
+                    id: "temp",
+                    name: gameName,
+                    owner: "You",
+                    players: [],
+                    percentage: 10,
+                })
             )
+            setGameName("")
+            setGameNameError("")
             navigate("/")
             return
         }

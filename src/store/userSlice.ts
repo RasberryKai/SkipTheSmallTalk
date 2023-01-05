@@ -28,6 +28,9 @@ const userSlice = createSlice({
             user.email = action.payload.email
             user.username = action.payload.username
         },
+        addGame(user, action: PayloadAction<DisplayGame>) {
+            user.games.push(action.payload)
+        },
         updateGames(user, action: PayloadAction<DisplayGame[]>) {
             user.games = action.payload
         },
@@ -42,11 +45,11 @@ const userSlice = createSlice({
             user.email = null
             user.username = null
             user.games = []
-            supabase.auth.signOut()
+            supabase.auth.signOut().then(() => {})
         },
     },
 })
 
-export const { logIn, logOut, updateGames } = userSlice.actions
+export const { logIn, logOut, updateGames, addGame } = userSlice.actions
 
 export default userSlice.reducer
