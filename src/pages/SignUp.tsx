@@ -128,7 +128,7 @@ export default function SignUp() {
                 >
                     Sign Up
                 </ButtonWrapper>
-                <GoogleButton className={"mt-6"} type={"dark"} onClick={googleLogIn} />
+                <GoogleButton className={"mt-6"} type={"dark"} onClick={googleLogIn} label={"Sign up with Google"} />
                 {errorMessage && <p className={"text-red-600 mt-4"}>{errorMessage}</p>}
                 <p className={"mt-4"}>
                     Already have an account?{" "}
