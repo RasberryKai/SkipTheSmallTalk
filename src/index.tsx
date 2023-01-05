@@ -17,6 +17,7 @@ import Play from "./pages/Play"
 import PasswordReset from "./pages/PasswordReset"
 import Error404 from "./pages/Error404"
 import Username from "./pages/Username"
+import DaddyContainer from "./components/common/DaddyContainer"
 
 const router = createBrowserRouter([
     {
@@ -120,7 +121,9 @@ root.render(
                 withNormalizeCSS
             >
                 <NotificationsProvider>
-                    <RouterProvider router={router} />
+                    <DaddyContainer>
+                        <RouterProvider router={router} />
+                    </DaddyContainer>
                 </NotificationsProvider>
             </MantineProvider>
         </PersistGate>
