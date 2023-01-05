@@ -23,7 +23,10 @@ export async function deleteGame(id: string): Promise<string | null> {
 }
 
 export async function createGame(gameName: string, ownerId: string) {
-    const { data, error } = await supabase.from(dbTables.games).insert([{ name: gameName, owner: ownerId }])
+    const { data, error } = await supabase
+        .from(dbTables.games)
+        .insert([{ name: gameName, owner: ownerId }])
+        .select()
     if (error) {
         console.log(error)
         return null
