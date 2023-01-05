@@ -9,9 +9,11 @@ import { dbTables } from "../../constants/keys"
 
 export default function ControlBar() {
     const dispatch = useDispatch()
+
     const cardsDone = useSelector((state: RootState) => state.game.cardsDone)
     const cardsLeft = useSelector((state: RootState) => state.game.cardsLeft)
     const levelGameId = useSelector((state: RootState) => state.game.levelGameId)
+    const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
 
     return (
         <div className={"flex flex-row w-full justify-between items-center w-[90%]"}>
@@ -25,7 +27,7 @@ export default function ControlBar() {
             <ActionBar />
             <RoundIconButton
                 onClick={() => {
-                    if (cardsLeft.length === 1)
+                    if (cardsLeft.length === 1 && loggedIn)
                         supabase
                             .from(dbTables.levelGames)
                             .update({ finished: true })
