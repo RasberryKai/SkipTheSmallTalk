@@ -5,15 +5,17 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    normal: "#383c6e",
-                    dark: "#2e345d",
+                    normal: "#333762",
+                    dark: "#272a45",
                     darker: "#4d527b",
                     notAsDark: "#6d75b1",
                 },
                 gray: "#1a1c1e",
                 actionable: "#197aff",
+                purple: "#714bce",
                 errorPage: "#d75032",
                 hoveredWhite: "#f1f1f1",
+                red: "#e12727",
             },
             backgroundImage: {
                 login: "url('/public/Login2.jpg')",

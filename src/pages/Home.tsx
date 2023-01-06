@@ -16,12 +16,13 @@ import { clearGameSelection, updateGame } from "../store/gameSelectionSlice"
 import GameSectionHeader from "../components/home/GameSectionHeader"
 
 export default function Home() {
-    const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
-    const user: UserState = useSelector((state: RootState) => state.user)
-    const levelGameId = useSelector((state: RootState) => state.game.levelGameId)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     useMantineTheme().colorScheme = "dark"
+
+    const loggedIn: boolean = useSelector((state: RootState) => state.user.loggedIn)
+    const user: UserState = useSelector((state: RootState) => state.user)
+    const levelGameId = useSelector((state: RootState) => state.game.levelGameId)
 
     const updateUserInfo = async () => {
         const email = await getCurrentEmail()
@@ -93,18 +94,24 @@ export default function Home() {
                 <GameSectionHeader />
                 <div className={"w-full pl-2 pr-2 mt-8"}>
                     {user.games &&
-                        user.games.map((game: DisplayGame, index: number) => (
-                            <Card
-                                name={game.name}
-                                playerNames={game.players}
-                                percentage={game.percentage}
-                                owner={game.owner}
-                                isOwner={game.owner === user.username}
-                                onClick={() => handleCardClick(game.owner, game.id)}
-                                id={game.id}
-                                key={index}
-                            />
-                        ))}
+                        user.games.map((game: DisplayGame, index: number) => {
+                            let src = require("../assets/elementIcons/Soulmates.png")
+                            if (game.name === "Test") src = require("../assets/elementIcons/Relationship.jpeg")
+                            else if (game.name === "More Tests") src = require("../assets/elementIcons/Relationship.jpeg")
+                            return (
+                                <Card
+                                    name={game.name}
+                                    playerNames={game.players}
+                                    percentage={game.percentage}
+                                    owner={game.owner}
+                                    isOwner={game.owner === user.username}
+                                    imgSource={src}
+                                    onClick={() => handleCardClick(game.owner, game.id)}
+                                    id={game.id}
+                                    key={index}
+                                />
+                            )
+                        })}
                 </div>
                 <AddButton />
             </div>
