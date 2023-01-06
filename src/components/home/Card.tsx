@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import OptionElement from "./OptionElement"
 import { deleteGame } from "../../api/games"
 import { showNotification } from "@mantine/notifications"
-import { useNavigate } from "react-router"
+import { useDispatch } from "react-redux"
+import { removeGame } from "../../store/userSlice"
 
 interface CardProps {
     id: string
@@ -17,7 +18,7 @@ interface CardProps {
 }
 
 export default function Card(props: CardProps) {
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [showFade, setShowFade] = useState<boolean>(false)
     const [showSettings, setShowSettings] = useState<boolean>(false)
     /*
@@ -40,7 +41,7 @@ export default function Card(props: CardProps) {
             setShowSettings(false)
             return
         }
-        navigate(0)
+        dispatch(removeGame(props.id))
     }
 
     useEffect(() => {

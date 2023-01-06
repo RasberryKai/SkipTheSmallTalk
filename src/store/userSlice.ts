@@ -39,6 +39,9 @@ const userSlice = createSlice({
             user.email = action.payload.email
             user.username = action.payload.username
         },
+        removeGame(user, action: PayloadAction<string>) {
+            user.games = user.games.filter((game) => game.id !== action.payload)
+        },
         logOut(user) {
             user.loggedIn = false
             user.id = null
@@ -50,6 +53,6 @@ const userSlice = createSlice({
     },
 })
 
-export const { logIn, logOut, updateGames, addGame } = userSlice.actions
+export const { logIn, logOut, updateGames, addGame, removeGame } = userSlice.actions
 
 export default userSlice.reducer

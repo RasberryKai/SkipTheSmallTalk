@@ -16,6 +16,7 @@ module.exports = {
                 errorPage: "#d75032",
                 hoveredWhite: "#f1f1f1",
                 red: "#e12727",
+                lightBlue: "#3398cd",
             },
             backgroundImage: {
                 login: "url('/public/Login2.jpg')",

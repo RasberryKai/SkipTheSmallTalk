@@ -10,7 +10,7 @@ export default function GameSectionHeader() {
             <div className={"flex flex-row"}>
                 <IconPlus
                     size={33}
-                    color={"#794de2"}
+                    color={"#3398cd"}
                     className={"mr-4 mt-2 hover:cursor-pointer"}
                     onClick={() => navigate("/addGame")}
                 />
