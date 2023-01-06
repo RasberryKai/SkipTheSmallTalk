@@ -11,7 +11,7 @@ module.exports = {
                     notAsDark: "#6d75b1",
                 },
                 gray: "#1a1c1e",
-                actionable: "#197aff",
+                actionable: "#1174f6",
                 purple: "#714bce",
                 errorPage: "#d75032",
                 hoveredWhite: "#f1f1f1",

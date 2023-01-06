@@ -6,7 +6,6 @@ import { DisplayGame, RootState } from "../types"
 import { useEffect } from "react"
 import { supabase } from "../lib/Supabase"
 import { logIn, logOut, updateGames, UserState } from "../store/userSlice"
-import AddButton from "../components/home/AddButton"
 import { clearGame } from "../store/gameSlice"
 import { getCurrentEmail, getCurrentUserId, getCurrentUsername, isGoogleUser } from "../api/user"
 import { dbTables } from "../constants/keys"
@@ -113,7 +112,6 @@ export default function Home() {
                             )
                         })}
                 </div>
-                <AddButton />
             </div>
         </AppContainer>
     )
