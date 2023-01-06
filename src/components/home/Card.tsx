@@ -1,5 +1,5 @@
 import { IconSettings, IconTrash } from "@tabler/icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import OptionElement from "./OptionElement"
 import { deleteGame } from "../../api/games"
 import { showNotification } from "@mantine/notifications"
@@ -18,6 +18,7 @@ interface CardProps {
 
 export default function Card(props: CardProps) {
     const navigate = useNavigate()
+    const [showFade, setShowFade] = useState<boolean>(false)
     const [showSettings, setShowSettings] = useState<boolean>(false)
     /*
     Then change the height of the inner div to be 100% of the outer div
@@ -42,6 +43,11 @@ export default function Card(props: CardProps) {
         navigate(0)
     }
 
+    useEffect(() => {
+        if (showSettings) setShowFade(true)
+        if (!showSettings) setTimeout(() => setShowFade(false), 300)
+    }, [showSettings])
+
     const getCardContent = () => {
         if (showSettings) {
             return (
@@ -60,7 +66,9 @@ export default function Card(props: CardProps) {
         }
         return (
             <>
-                <div className={"flex flex-row items-center h-full w-5/6 h-full overflow-hidden"}>
+                <div
+                    className={`flex flex-row items-center h-full w-5/6 h-full overflow-hidden ${showFade ? "animate-fade" : ""}`}
+                >
                     <div className={"h-full ml-4"}>
                         <p className={"text-xl font-bold text-white"}>{props.name}</p>
                         <p className={"text-[15px]"}>
@@ -74,7 +82,7 @@ export default function Card(props: CardProps) {
                     </div>
                 </div>
                 <IconSettings
-                    className={"mr-4"}
+                    className={`mr-4 ${showFade ? "animate-fade" : ""}`}
                     color={"#6d75b1"}
                     size={40}
                     stroke={1.5}
@@ -86,9 +94,7 @@ export default function Card(props: CardProps) {
 
     return (
         <div
-            className={`${
-                showSettings ? "bg-purple shadow-sm shadow-purple justify-start" : "bg-primary-normal shadow-xl shadow-primary"
-            } w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer`}
+            className={`bg-primary-normal shadow-xl shadow-primary w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer`}
         >
             <img src={props.imgSource} alt={"Ice cream"} className={"w-20 h-20 rounded-[43%] mt-2 ml-3 mb-2 select-none"} />
             {getCardContent()}
