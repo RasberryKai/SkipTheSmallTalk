@@ -1,6 +1,9 @@
 import { IconSettings, IconTrash } from "@tabler/icons"
 import { useState } from "react"
 import OptionElement from "./OptionElement"
+import { deleteGame } from "../../api/games"
+import { showNotification } from "@mantine/notifications"
+import { useNavigate } from "react-router"
 
 interface CardProps {
     id: string
@@ -14,6 +17,7 @@ interface CardProps {
 }
 
 export default function Card(props: CardProps) {
+    const navigate = useNavigate()
     const [showSettings, setShowSettings] = useState<boolean>(false)
     /*
     Then change the height of the inner div to be 100% of the outer div
@@ -23,21 +27,26 @@ export default function Card(props: CardProps) {
     Add glowing effect to cards (shadows)
      */
 
-    const handleDelete = () => {
-        console.log("Delete")
+    const handleDelete = async () => {
+        console.log("Handling delete")
+        const error = await deleteGame(props.id)
+        if (error) {
+            showNotification({
+                title: "Error",
+                message: error,
+                color: "red",
+            })
+            setShowSettings(false)
+            return
+        }
+        navigate(0)
     }
 
     const getCardContent = () => {
         if (showSettings) {
             return (
                 <div className={"w-full grid grid-cols-2 ml-2"}>
-                    <OptionElement
-                        className={"bg-red rounded-l-3xl"}
-                        onClick={() => {
-                            handleDelete()
-                            setShowSettings(false)
-                        }}
-                    >
+                    <OptionElement className={"bg-red rounded-l-3xl"} onClick={handleDelete}>
                         <IconTrash size={50} stroke={1.2} color={"#fff"} />
                     </OptionElement>
                     <OptionElement className={"bg-primary-normal rounded-r-3xl"} onClick={() => setShowSettings(false)}>
@@ -76,13 +85,9 @@ export default function Card(props: CardProps) {
         <div
             className={`${
                 showSettings ? "bg-purple shadow-md shadow-purple justify-start" : "bg-primary-normal shadow-xl shadow-primary"
-            } w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300`}
+            } w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer`}
         >
-            <img
-                src={props.imgSource}
-                alt={"Ice cream"}
-                className={"w-20 h-20 rounded-[43%] mt-2 ml-3 mb-2 select-none hover:cursor-pointer"}
-            />
+            <img src={props.imgSource} alt={"Ice cream"} className={"w-20 h-20 rounded-[43%] mt-2 ml-3 mb-2 select-none"} />
             {getCardContent()}
         </div>
     )
