@@ -66,18 +66,6 @@ root.render(
                 theme={{
                     colorScheme: "dark",
                     colors: {
-                        red: [
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                            "#ffd331",
-                        ],
                         realRed: [
                             "#FF0000",
                             "#FF0000",
@@ -95,13 +83,10 @@ root.render(
                         InputWrapper: {
                             styles: {
                                 label: { color: "white" },
-                                error: { color: "#f9fb02" },
                             },
                         },
                         Input: {
-                            styles: {
-                                error: { color: "#f9fb02" },
-                            },
+                            styles: {},
                         },
                         TextInput: {
                             defaultProps: {
