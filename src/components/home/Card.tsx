@@ -46,10 +46,13 @@ export default function Card(props: CardProps) {
         if (showSettings) {
             return (
                 <div className={"w-full grid grid-cols-2 ml-2"}>
-                    <OptionElement className={"bg-red rounded-l-3xl"} onClick={handleDelete}>
+                    <OptionElement className={"bg-red rounded-l-3xl shadow-md shadow-red"} onClick={handleDelete}>
                         <IconTrash size={50} stroke={1.2} color={"#fff"} />
                     </OptionElement>
-                    <OptionElement className={"bg-primary-normal rounded-r-3xl"} onClick={() => setShowSettings(false)}>
+                    <OptionElement
+                        className={"bg-primary-normal rounded-r-3xl shadow-md shadow-primary-normal"}
+                        onClick={() => setShowSettings(false)}
+                    >
                         <IconSettings size={50} stroke={1.2} color={"#fff"} />
                     </OptionElement>
                 </div>
@@ -84,7 +87,7 @@ export default function Card(props: CardProps) {
     return (
         <div
             className={`${
-                showSettings ? "bg-purple shadow-md shadow-purple justify-start" : "bg-primary-normal shadow-xl shadow-primary"
+                showSettings ? "bg-purple shadow-sm shadow-purple justify-start" : "bg-primary-normal shadow-xl shadow-primary"
             } w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer`}
         >
             <img src={props.imgSource} alt={"Ice cream"} className={"w-20 h-20 rounded-[43%] mt-2 ml-3 mb-2 select-none"} />
