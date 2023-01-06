@@ -58,7 +58,7 @@ export default function Username() {
             <AuthContainer
                 onSubmit={(e: any) => {
                     e.preventDefault()
-                    validateUsername()
+                    validateUsername().then()
                 }}
             >
                 <AuthHeader>Username</AuthHeader>
