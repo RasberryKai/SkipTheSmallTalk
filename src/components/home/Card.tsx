@@ -5,7 +5,6 @@ import { deleteGame } from "../../api/games"
 import { showNotification } from "@mantine/notifications"
 import { useDispatch } from "react-redux"
 import { removeGame } from "../../store/userSlice"
-import { useNavigate } from "react-router"
 
 interface CardProps {
     id: string
@@ -20,7 +19,6 @@ interface CardProps {
 
 export default function Card(props: CardProps) {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const [showFade, setShowFade] = useState<boolean>(false)
     const [showSettings, setShowSettings] = useState<boolean>(false)
     const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
@@ -55,7 +53,7 @@ export default function Card(props: CardProps) {
     const getCardContent = () => {
         if (showSettings) {
             return (
-                <div className={"w-full grid grid-cols-3 ml-2"}>
+                <div className={"w-full grid grid-cols-2 ml-2"}>
                     <OptionElement
                         className={"bg-red rounded-l-3xl shadow-sm shadow-red"}
                         onClick={() => {
@@ -69,12 +67,12 @@ export default function Card(props: CardProps) {
                     >
                         <IconTrash size={50} stroke={1.2} color={"#fff"} />
                     </OptionElement>
-                    <OptionElement
-                        className={"bg-purple shadow-sm shadow-purple"}
-                        onClick={() => navigate(`/options/${props.id}`)}
-                    >
-                        <IconSettings size={50} stroke={1.2} color={"#fff"} />
-                    </OptionElement>
+                    {/*<OptionElement*/}
+                    {/*    className={"bg-purple shadow-sm shadow-purple"}*/}
+                    {/*    onClick={() => navigate(`/options/${props.id}`)}*/}
+                    {/*>*/}
+                    {/*    <IconSettings size={50} stroke={1.2} color={"#fff"} />*/}
+                    {/*</OptionElement>*/}
                     <OptionElement
                         className={"bg-primary-normal rounded-r-3xl shadow-sm shadow-primary-normal"}
                         onClick={() => setShowSettings(false)}
@@ -84,6 +82,7 @@ export default function Card(props: CardProps) {
                 </div>
             )
         }
+
         return (
             <>
                 <div className={`grid grid-cols-4 items-center w-full h-full ${showFade ? "animate-fade" : ""}`}>
