@@ -137,10 +137,10 @@ export default function Card(props: CardProps) {
                     <div className={"flex justify-end items-center"}>
                         <IconSettings
                             className={`mr-4 ${showFade ? "animate-fade" : ""}`}
-                            color={"#6d75b1"}
+                            color={colors.primaryGray}
                             size={40}
                             stroke={1.5}
-                            onClick={() => setShowSettings(!showSettings)}
+                            onClick={() => setShowSettings(true)}
                         />
                     </div>
                 </div>
