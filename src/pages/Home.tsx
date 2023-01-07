@@ -13,6 +13,7 @@ import AppContainer from "../components/common/AppContainer"
 import { getGamesFromDBAsDisplayGames } from "../api/games"
 import { clearGameSelection, updateGame } from "../store/gameSelectionSlice"
 import GameSectionHeader from "../components/home/GameSectionHeader"
+import HomeHeader from "../components/home/HomeHeader"
 
 export default function Home() {
     const navigate = useNavigate()
@@ -89,8 +90,8 @@ export default function Home() {
     return (
         <AppContainer>
             {/* Body Container */}
-            {/*<HomeHeader />*/}
-            <div className={"w-full flex flex-col items-center overflow-scroll mt-4 pl-5 pr-5"}>
+            <HomeHeader />
+            <div className={"w-full flex flex-col items-center overflow-scroll mt-8 pl-5 pr-5"}>
                 <GameSectionHeader />
                 <div className={"w-full pl-2 pr-2 mt-8"}>
                     {user.games &&

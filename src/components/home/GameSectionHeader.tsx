@@ -1,5 +1,6 @@
 import { IconPlus, IconSearch } from "@tabler/icons"
 import { useNavigate } from "react-router"
+import { colors } from "../../constants/colors"
 
 export default function GameSectionHeader() {
     const navigate = useNavigate()
@@ -10,11 +11,11 @@ export default function GameSectionHeader() {
             <div className={"flex flex-row"}>
                 <IconPlus
                     size={33}
-                    color={"#6f7381"}
+                    color={colors.primaryGray}
                     className={"mr-4 mt-2 hover:cursor-pointer"}
                     onClick={() => navigate("/addGame")}
                 />
-                <IconSearch size={32} color={"#6f7381"} className={"mt-2"} />
+                <IconSearch size={32} color={colors.primaryGray} className={"mt-2"} />
             </div>
         </div>
     )
