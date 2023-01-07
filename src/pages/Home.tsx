@@ -97,6 +97,8 @@ export default function Home() {
                             let src = require("../assets/elementIcons/Soulmates.png")
                             if (game.name === "Test") src = require("../assets/elementIcons/Relationship.jpeg")
                             else if (game.name === "More Tests") src = require("../assets/elementIcons/Relationship.jpeg")
+                            else if (game.name === "Last Test") src = require("../assets/elementIcons/default.png")
+                            else if (game.name === "Last Final Test") src = require("../assets/elementIcons/SmokingDefault.png")
                             return (
                                 <Card
                                     name={game.name}
