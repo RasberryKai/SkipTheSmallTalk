@@ -1,10 +1,13 @@
 import { IconSettings, IconTrash, IconX } from "@tabler/icons"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import OptionElement from "./OptionElement"
 import { deleteGame } from "../../api/games"
 import { showNotification } from "@mantine/notifications"
 import { useDispatch } from "react-redux"
 import { removeGame } from "../../store/userSlice"
+import { Center } from "@mantine/core"
+import { colors } from "../../constants/colors"
+import { Oval } from "react-loader-spinner"
 
 interface CardProps {
     id: string
@@ -21,6 +24,7 @@ export default function Card(props: CardProps) {
     const dispatch = useDispatch()
     const [showFade, setShowFade] = useState<boolean>(false)
     const [showSettings, setShowSettings] = useState<boolean>(false)
+    const [deleteOption, setDeleteOption] = useState<boolean>(false)
     const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
     /*
     Then change the height of the inner div to be 100% of the outer div
@@ -51,20 +55,53 @@ export default function Card(props: CardProps) {
     }, [showSettings])
 
     const getCardContent = () => {
+        if (deleteOption) {
+            return (
+                <div className={"w-full grid grid-rows-2 pr-6 pt-4"}>
+                    <Center>
+                        <p className={"text-center text-white text-lg font-bold ml-2"}>
+                            Are you sure, you want to delete this game?
+                        </p>
+                    </Center>
+                    <div className={"w-full grid grid-cols-2"}>
+                        <div
+                            onClick={() => {
+                                setDeleteOption(false)
+                                setShowSettings(false)
+                            }}
+                            className={"w-full flex justify-center items-center pb-2 border-r-[1px] mt-2"}
+                        >
+                            <p className={"font-bold text-white pb-2"}>Cancel</p>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setDeleteLoading(true)
+                                handleDelete().then()
+                            }}
+                            className={"w-full flex justify-center items-center pb-2 border-l-[1px] mt-2"}
+                        >
+                            {deleteLoading ? (
+                                <Oval
+                                    width={"22"}
+                                    height={"22"}
+                                    color={colors.red}
+                                    secondaryColor={colors.softRed}
+                                    strokeWidth={2.3}
+                                    strokeWidthSecondary={2.3}
+                                />
+                            ) : (
+                                <p className={"font-bold text-red pb-2"}>Delete</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
         if (showSettings) {
             return (
                 <div className={"w-full grid grid-cols-2 ml-2"}>
-                    <OptionElement
-                        className={"bg-red rounded-l-3xl shadow-sm shadow-red"}
-                        onClick={() => {
-                            ;(async () => {
-                                setDeleteLoading(true)
-                                await handleDelete()
-                                setDeleteLoading(false)
-                            })()
-                        }}
-                        loading={deleteLoading}
-                    >
+                    <OptionElement className={"bg-red rounded-l-3xl shadow-sm shadow-red"} onClick={() => setDeleteOption(true)}>
                         <IconTrash size={50} stroke={1.2} color={"#fff"} />
                     </OptionElement>
                     {/*<OptionElement*/}
@@ -113,7 +150,7 @@ export default function Card(props: CardProps) {
 
     return (
         <div
-            className={`bg-primary-normal shadow-xl shadow-primary w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer`}
+            className={`bg-primary-normal shadow-xl shadow-primary w-full h-28 flex rounded-3xl flex flex-row justify-between items-center select-none pt-4 pb-4 mb-8 transition-all duration-300 hover:cursor-pointer overflow-hidden`}
         >
             <img src={props.imgSource} alt={"Ice cream"} className={"w-20 h-20 rounded-[43%] mt-2 ml-3 mb-2 select-none"} />
             {getCardContent()}

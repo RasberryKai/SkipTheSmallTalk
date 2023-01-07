@@ -89,6 +89,7 @@ export default function Home() {
     return (
         <AppContainer>
             {/* Body Container */}
+            {/*<HomeHeader />*/}
             <div className={"w-full flex flex-col items-center overflow-scroll mt-4 pl-5 pr-5"}>
                 <GameSectionHeader />
                 <div className={"w-full pl-2 pr-2 mt-8"}>

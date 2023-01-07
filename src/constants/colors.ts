@@ -7,6 +7,7 @@ export const colors = {
     actionable: "#1174f6",
     purple: "#794de2",
     lightBlue: "#3398cd",
-    red: "#e12727",
+    softRed: "#e12727",
+    red: "#FF0000",
     hoveredWhite: "#f1f1f1",
 }
