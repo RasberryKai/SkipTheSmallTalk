@@ -4,18 +4,20 @@ import { supabase } from "../lib/Supabase"
 
 export interface UserState {
     loggedIn: boolean
-    games: DisplayGame[]
     id: string | null | undefined
     email: string | null | undefined
     username: string | null | undefined
+    games: DisplayGame[]
+    gamesBeforeFilter: DisplayGame[]
 }
 
 const initialState: UserState = {
     loggedIn: false,
-    games: [],
     id: null,
     email: null,
     username: null,
+    games: [],
+    gamesBeforeFilter: [],
 }
 
 const userSlice = createSlice({
@@ -42,6 +44,18 @@ const userSlice = createSlice({
         removeGame(user, action: PayloadAction<string>) {
             user.games = user.games.filter((game) => game.id !== action.payload)
         },
+        saveGamesBeforeFilter(user) {
+            user.gamesBeforeFilter = user.games
+        },
+        filterGameByIds(user, action: PayloadAction<string[]>) {
+            user.games = user.gamesBeforeFilter.filter((game) => action.payload.includes(game.id))
+        },
+        restoreUnfilteredGames(user) {
+            user.games = user.gamesBeforeFilter
+        },
+        removeGames(user) {
+            user.games = []
+        },
         logOut(user) {
             user.loggedIn = false
             user.id = null
@@ -53,6 +67,17 @@ const userSlice = createSlice({
     },
 })
 
-export const { logIn, logOut, updateGames, addGame, removeGame } = userSlice.actions
+export const {
+    logIn,
+    logOut,
+    updateGames,
+    addGame,
+    removeGame,
+    saveGamesBeforeFilter,
+    filterGameByIds,
+    restoreUnfilteredGames,
+    removeGames,
+    updateUser,
+} = userSlice.actions
 
 export default userSlice.reducer

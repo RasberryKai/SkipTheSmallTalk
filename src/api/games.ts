@@ -99,3 +99,12 @@ export async function getGamesFromDBAsDisplayGames(userId: string) {
     }
     return gamesArray
 }
+
+export async function fullTextSearchGames(searchQuery: string) {
+    const { data, error } = await supabase.from(dbTables.games).select("id, owner").textSearch("name", `'${searchQuery}'`)
+    if (error) {
+        console.log(error)
+        return null
+    }
+    return data
+}
