@@ -26,13 +26,6 @@ export default function Card(props: CardProps) {
     const [showSettings, setShowSettings] = useState<boolean>(false)
     const [deleteOption, setDeleteOption] = useState<boolean>(false)
     const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
-    /*
-    Then change the height of the inner div to be 100% of the outer div
-    Afterwards put the settings and the inner div next to each other, so if the options show, the rounded main part will be
-    pushed to the left
-
-    Add glowing effect to cards (shadows)
-     */
 
     const handleDelete = async () => {
         console.log("Handling delete")
@@ -44,9 +37,14 @@ export default function Card(props: CardProps) {
                 color: "red",
             })
             setShowSettings(false)
+            setDeleteOption(false)
+            setDeleteLoading(false)
             return
         }
         dispatch(removeGame(props.id))
+        setShowSettings(false)
+        setDeleteOption(false)
+        setDeleteLoading(false)
     }
 
     useEffect(() => {
